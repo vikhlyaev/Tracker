@@ -1,6 +1,6 @@
 import UIKit
 
-final class ViewController: UIViewController {
+final class StatisticViewController: UIViewController {
     
     // MARK: - Life Cycle
     
@@ -21,7 +21,7 @@ final class ViewController: UIViewController {
 
 // MARK: - Setting Constraints
 
-extension ViewController {
+extension StatisticViewController {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
