@@ -14,6 +14,7 @@
 		0A2378152A0CE54900B8B2AD /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */; };
 		0AB8A5732A14FC9A005E239F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5722A14FC9A005E239F /* TabBarController.swift */; };
 		0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5762A14FD95005E239F /* StatisticViewController.swift */; };
+		0AB8A5792A151A4D005E239F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5782A151A4D005E239F /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
 		0AB8A5722A14FC9A005E239F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		0AB8A5762A14FD95005E239F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
+		0AB8A5782A151A4D005E239F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		0A2378122A0CB3B100B8B2AD /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				0AB8A57A2A151A54005E239F /* Common */,
 				0AB8A5752A14FD75005E239F /* Statistic */,
 				0AB8A5742A14FD6B005E239F /* Trackers */,
 				0AB8A5722A14FC9A005E239F /* TabBarController.swift */,
@@ -132,6 +135,14 @@
 				0AB8A5762A14FD95005E239F /* StatisticViewController.swift */,
 			);
 			path = Statistic;
+			sourceTree = "<group>";
+		};
+		0AB8A57A2A151A54005E239F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0AB8A5782A151A4D005E239F /* Constants.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +220,7 @@
 				0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */,
 				0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */,
 				0A2377DC2A0CB18800B8B2AD /* AppDelegate.swift in Sources */,
+				0AB8A5792A151A4D005E239F /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
