@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		0A2377DC2A0CB18800B8B2AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2377DB2A0CB18800B8B2AD /* AppDelegate.swift */; };
-		0A2377E02A0CB18800B8B2AD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2377DF2A0CB18800B8B2AD /* ViewController.swift */; };
+		0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2377DF2A0CB18800B8B2AD /* TrackersViewController.swift */; };
 		0A2377E52A0CB18A00B8B2AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A2377E42A0CB18A00B8B2AD /* Assets.xcassets */; };
 		0A2377E82A0CB18A00B8B2AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A2377E62A0CB18A00B8B2AD /* LaunchScreen.storyboard */; };
 		0A2378152A0CE54900B8B2AD /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */; };
+		0AB8A5732A14FC9A005E239F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5722A14FC9A005E239F /* TabBarController.swift */; };
+		0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5762A14FD95005E239F /* StatisticViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0A2377D82A0CB18800B8B2AD /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A2377DB2A0CB18800B8B2AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0A2377DF2A0CB18800B8B2AD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0A2377DF2A0CB18800B8B2AD /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 		0A2377E42A0CB18A00B8B2AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A2377E72A0CB18A00B8B2AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A2377E92A0CB18A00B8B2AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
+		0AB8A5722A14FC9A005E239F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		0AB8A5762A14FD95005E239F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +95,9 @@
 		0A2378122A0CB3B100B8B2AD /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				0A2377DF2A0CB18800B8B2AD /* ViewController.swift */,
+				0AB8A5752A14FD75005E239F /* Statistic */,
+				0AB8A5742A14FD6B005E239F /* Trackers */,
+				0AB8A5722A14FC9A005E239F /* TabBarController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -110,6 +116,22 @@
 				0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		0AB8A5742A14FD6B005E239F /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				0A2377DF2A0CB18800B8B2AD /* TrackersViewController.swift */,
+			);
+			path = Trackers;
+			sourceTree = "<group>";
+		};
+		0AB8A5752A14FD75005E239F /* Statistic */ = {
+			isa = PBXGroup;
+			children = (
+				0AB8A5762A14FD95005E239F /* StatisticViewController.swift */,
+			);
+			path = Statistic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,7 +205,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2378152A0CE54900B8B2AD /* UIColor + Extensions.swift in Sources */,
-				0A2377E02A0CB18800B8B2AD /* ViewController.swift in Sources */,
+				0AB8A5732A14FC9A005E239F /* TabBarController.swift in Sources */,
+				0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */,
+				0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */,
 				0A2377DC2A0CB18800B8B2AD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
