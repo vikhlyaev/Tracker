@@ -1,6 +1,6 @@
 import UIKit
 
-final class TabBarController: UITabBarController {
+final class AppTabBarController: UITabBarController {
     
     private enum Tabs: Int {
         case trackers
