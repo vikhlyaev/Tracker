@@ -40,6 +40,37 @@ final class TrackersViewController: UIViewController {
     private func setupNavigationBar() {
         title = Constants.Text.trackersTitle
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .appBlack
+        navigationItem.leftBarButtonItem = setupLeftBarButtonItem()
+        navigationItem.rightBarButtonItem = setupRightBarButtonItem()
+    }
+    
+    private func setupLeftBarButtonItem() -> UIBarButtonItem {
+        UIBarButtonItem(
+            image: UIImage(
+                systemName: "plus",
+                withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
+            ),
+            style: .plain,
+            target: self,
+            action: #selector(addButtonTapped)
+        )
+    }
+    
+    private func setupRightBarButtonItem() -> UIBarButtonItem {
+        let datePicker: UIDatePicker = {
+            let datePicker = UIDatePicker()
+            datePicker.preferredDatePickerStyle = .compact
+            datePicker.datePickerMode = .date
+            return datePicker
+        }()
+        
+        return UIBarButtonItem(customView: datePicker)
+    }
+    
+    @objc
+    private func addButtonTapped() {
+        print("addButtonTapped")
     }
 }
 
