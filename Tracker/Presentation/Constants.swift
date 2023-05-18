@@ -13,5 +13,9 @@ struct Constants {
         
         static let statisticTitle = "Статистика"
         static let statisticEmptyStatistic = "Анализировать пока нечего"
+        
+        static let creatingTrackerTitle = "Создание трекера"
+        static let creatingTrackerHabitButtonTitle = "Привычка"
+        static let creatingTrackerIrregularEventsTitle = "Нерегулярные событие"
     }
 }
