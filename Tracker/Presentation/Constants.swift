@@ -10,6 +10,7 @@ struct Constants {
     struct Text {
         static let trackersTitle = "Трекеры"
         static let trackersEmptyTrackerList = "Что будем отслеживать?"
+        static let trackersSearchPlaceholder = "Поиск"
         
         static let statisticTitle = "Статистика"
         static let statisticEmptyStatistic = "Анализировать пока нечего"
