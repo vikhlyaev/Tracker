@@ -32,7 +32,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - Setup UI
     
     private func setupView() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .appWhite
         view.addSubview(emptyTrackerListImageView)
         view.addSubview(emptyTrackerListLabel)
     }
@@ -70,7 +70,9 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addButtonTapped() {
-        print("addButtonTapped")
+        let creatingTrackerViewController = CreatingTrackerViewController()
+        let navigationController = UINavigationController(rootViewController: creatingTrackerViewController)
+        present(navigationController, animated: true)
     }
 }
 
