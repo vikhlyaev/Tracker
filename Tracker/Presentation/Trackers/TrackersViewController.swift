@@ -71,8 +71,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func addButtonTapped() {
         let creatingTrackerViewController = CreatingTrackerViewController()
-        let navigationController = UINavigationController(rootViewController: creatingTrackerViewController)
-        present(navigationController, animated: true)
+        present(creatingTrackerViewController, animated: true)
     }
 }
 
