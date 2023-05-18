@@ -15,13 +15,15 @@ final class CreatingTrackerViewController: UIViewController {
     private lazy var habitButton = AppButton(
         with: Constants.Text.creatingTrackerHabitButtonTitle
     ) { [weak self] in
-        
+        let newHabitViewController = NewHabitViewController()
+        self?.present(newHabitViewController, animated: true)
     }
     
     private lazy var irregularEventsButton = AppButton(
         with: Constants.Text.creatingTrackerIrregularEventsTitle
     ) { [weak self] in
-        
+        let newIrregularEventViewController = NewIrregularEventViewController()
+        self?.present(newIrregularEventViewController, animated: true)
     }
     
     private lazy var buttonsStackView = UIStackView(
@@ -34,7 +36,6 @@ final class CreatingTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
     }
@@ -46,13 +47,11 @@ final class CreatingTrackerViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(buttonsStackView)
     }
-    
 }
 
 // MARK: - Setting Constraints
 
 extension CreatingTrackerViewController {
-    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
@@ -65,6 +64,5 @@ extension CreatingTrackerViewController {
             buttonsStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
 }
 
