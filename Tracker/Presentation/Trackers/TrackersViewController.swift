@@ -2,6 +2,8 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     
+    // MARK: - UI
+
     private lazy var emptyTrackerListImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: Constants.Images.trackersEmptyTrackerList)
@@ -19,6 +21,14 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.datePickerMode = .date
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        return datePicker
+    }()
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -26,6 +36,7 @@ final class TrackersViewController: UIViewController {
         setupView()
         setConstraints()
         setupNavigationBar()
+        setDatePickerConstraints()
     }
     
     // MARK: - Setup UI
@@ -41,7 +52,15 @@ final class TrackersViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .appBlack
         navigationItem.leftBarButtonItem = setupLeftBarButtonItem()
-        navigationItem.rightBarButtonItem = setupRightBarButtonItem()
+        /// Вопрос ревьюеру: добавление subview на UINavigationController - это нормальное решение?
+        /// Или же просто оставить UIDatePicker в RightBarButtonItem?
+        navigationController?.navigationBar.addSubview(datePicker)
+//        navigationItem.rightBarButtonItem = setupRightBarButtonItem()
+        
+        let searchController = UISearchController()
+        searchController.hidesNavigationBarDuringPresentation = false
+        navigationItem.searchController = searchController
+        navigationItem.searchController?.searchBar.placeholder = Constants.Text.trackersSearchPlaceholder
     }
     
     private func setupLeftBarButtonItem() -> UIBarButtonItem {
@@ -56,15 +75,15 @@ final class TrackersViewController: UIViewController {
         )
     }
     
-    private func setupRightBarButtonItem() -> UIBarButtonItem {
-        let datePicker: UIDatePicker = {
-            let datePicker = UIDatePicker()
-            datePicker.preferredDatePickerStyle = .compact
-            datePicker.datePickerMode = .date
-            return datePicker
-        }()
-        return UIBarButtonItem(customView: datePicker)
-    }
+//    private func setupRightBarButtonItem() -> UIBarButtonItem {
+//        let datePicker: UIDatePicker = {
+//            let datePicker = UIDatePicker()
+//            datePicker.preferredDatePickerStyle = .compact
+//            datePicker.datePickerMode = .date
+//            return datePicker
+//        }()
+//        return UIBarButtonItem(customView: datePicker)
+//    }
     
     @objc
     private func addButtonTapped() {
@@ -76,7 +95,6 @@ final class TrackersViewController: UIViewController {
 // MARK: - Setting Constraints
 
 extension TrackersViewController {
-    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             emptyTrackerListImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -91,5 +109,13 @@ extension TrackersViewController {
         ])
     }
     
+    private func setDatePickerConstraints() {
+        if let navigationController {
+            NSLayoutConstraint.activate([
+                datePicker.bottomAnchor.constraint(equalTo: navigationController.navigationBar.bottomAnchor, constant: -60),
+                datePicker.trailingAnchor.constraint(equalTo: navigationController.navigationBar.trailingAnchor, constant: -16)
+            ])
+        }
+    }
 }
 
