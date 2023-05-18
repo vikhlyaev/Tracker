@@ -13,6 +13,10 @@
 		0A2377E82A0CB18A00B8B2AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A2377E62A0CB18A00B8B2AD /* LaunchScreen.storyboard */; };
 		0A2378152A0CE54900B8B2AD /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */; };
 		0A5893A52A163D3600A80732 /* UIStackView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893A42A163D3600A80732 /* UIStackView + Extensions.swift */; };
+		0A5893A82A165DC900A80732 /* NewHabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893A72A165DC900A80732 /* NewHabitViewController.swift */; };
+		0A5893AC2A166F0200A80732 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893AB2A166F0200A80732 /* ScheduleViewController.swift */; };
+		0A5893AE2A166F4000A80732 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893AD2A166F4000A80732 /* CategoryViewController.swift */; };
+		0A5893B02A166FA400A80732 /* NewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893AF2A166FA400A80732 /* NewIrregularEventViewController.swift */; };
 		0AB8A5732A14FC9A005E239F /* AppTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5722A14FC9A005E239F /* AppTabBarController.swift */; };
 		0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5762A14FD95005E239F /* StatisticViewController.swift */; };
 		0AB8A5792A151A4D005E239F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5782A151A4D005E239F /* Constants.swift */; };
@@ -29,6 +33,10 @@
 		0A2377E92A0CB18A00B8B2AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
 		0A5893A42A163D3600A80732 /* UIStackView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extensions.swift"; sourceTree = "<group>"; };
+		0A5893A72A165DC900A80732 /* NewHabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitViewController.swift; sourceTree = "<group>"; };
+		0A5893AB2A166F0200A80732 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		0A5893AD2A166F4000A80732 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		0A5893AF2A166FA400A80732 /* NewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		0AB8A5722A14FC9A005E239F /* AppTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabBarController.swift; sourceTree = "<group>"; };
 		0AB8A5762A14FD95005E239F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		0AB8A5782A151A4D005E239F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -105,6 +113,10 @@
 			children = (
 				0AB8A57A2A151A54005E239F /* Common */,
 				0AB8A5752A14FD75005E239F /* Statistic */,
+				0A5893AA2A166EE600A80732 /* Category */,
+				0A5893A92A1665C600A80732 /* Schedule */,
+				0A5893B12A166FA800A80732 /* NewIrregularEvent */,
+				0A5893A62A165D9800A80732 /* NewHabit */,
 				0AB8A57D2A155FB7005E239F /* CreatingTracker */,
 				0AB8A5742A14FD6B005E239F /* Trackers */,
 				0AB8A5782A151A4D005E239F /* Constants.swift */,
@@ -128,6 +140,38 @@
 				0A5893A42A163D3600A80732 /* UIStackView + Extensions.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		0A5893A62A165D9800A80732 /* NewHabit */ = {
+			isa = PBXGroup;
+			children = (
+				0A5893A72A165DC900A80732 /* NewHabitViewController.swift */,
+			);
+			path = NewHabit;
+			sourceTree = "<group>";
+		};
+		0A5893A92A1665C600A80732 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				0A5893AB2A166F0200A80732 /* ScheduleViewController.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		0A5893AA2A166EE600A80732 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				0A5893AD2A166F4000A80732 /* CategoryViewController.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		0A5893B12A166FA800A80732 /* NewIrregularEvent */ = {
+			isa = PBXGroup;
+			children = (
+				0A5893AF2A166FA400A80732 /* NewIrregularEventViewController.swift */,
+			);
+			path = NewIrregularEvent;
 			sourceTree = "<group>";
 		};
 		0AB8A5742A14FD6B005E239F /* Trackers */ = {
@@ -236,10 +280,14 @@
 				0A5893A52A163D3600A80732 /* UIStackView + Extensions.swift in Sources */,
 				0AB8A5732A14FC9A005E239F /* AppTabBarController.swift in Sources */,
 				0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */,
+				0A5893AE2A166F4000A80732 /* CategoryViewController.swift in Sources */,
+				0A5893A82A165DC900A80732 /* NewHabitViewController.swift in Sources */,
 				0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */,
 				0AB8A57C2A155FB1005E239F /* CreatingTrackerViewController.swift in Sources */,
 				0A2377DC2A0CB18800B8B2AD /* AppDelegate.swift in Sources */,
+				0A5893B02A166FA400A80732 /* NewIrregularEventViewController.swift in Sources */,
 				0AB8A5792A151A4D005E239F /* Constants.swift in Sources */,
+				0A5893AC2A166F0200A80732 /* ScheduleViewController.swift in Sources */,
 				0AB8A57F2A1560B9005E239F /* AppButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
