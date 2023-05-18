@@ -23,7 +23,6 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
         setupNavigationBar()
@@ -64,7 +63,6 @@ final class TrackersViewController: UIViewController {
             datePicker.datePickerMode = .date
             return datePicker
         }()
-        
         return UIBarButtonItem(customView: datePicker)
     }
     
