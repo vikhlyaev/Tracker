@@ -2,8 +2,11 @@ import UIKit
 
 final class AppButton: UIButton {
     
-    convenience init(with title: String) {
+    private var action: (() -> Void)?
+    
+    convenience init(with title: String, and action: @escaping () -> Void) {
         self.init(type: .system)
+        self.action = action
         setTitle(title, for: .normal)
         setupButton()
         setConstraints()
@@ -26,7 +29,14 @@ final class AppButton: UIButton {
         titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         titleLabel?.textColor = .appWhite
         
+        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
         translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    @objc
+    private func buttonTapped() {
+        action?()
     }
 }
 

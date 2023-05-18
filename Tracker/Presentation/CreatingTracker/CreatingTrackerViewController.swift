@@ -12,8 +12,17 @@ final class CreatingTrackerViewController: UIViewController {
         return label
     }()
     
-    private lazy var habitButton = AppButton(with: Constants.Text.creatingTrackerHabitButtonTitle)
-    private lazy var irregularEventsButton = AppButton(with: Constants.Text.creatingTrackerIrregularEventsTitle)
+    private lazy var habitButton = AppButton(
+        with: Constants.Text.creatingTrackerHabitButtonTitle
+    ) { [weak self] in
+        
+    }
+    
+    private lazy var irregularEventsButton = AppButton(
+        with: Constants.Text.creatingTrackerIrregularEventsTitle
+    ) { [weak self] in
+        
+    }
     
     private lazy var buttonsStackView = UIStackView(
         arrangedSubviews: [habitButton, irregularEventsButton],
