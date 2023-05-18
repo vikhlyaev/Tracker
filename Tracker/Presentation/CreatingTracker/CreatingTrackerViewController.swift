@@ -2,6 +2,16 @@ import UIKit
 
 final class CreatingTrackerViewController: UIViewController {
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.Text.creatingTrackerTitle
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .appBlack
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private lazy var habitButton = AppButton(with: Constants.Text.creatingTrackerHabitButtonTitle)
     private lazy var irregularEventsButton = AppButton(with: Constants.Text.creatingTrackerIrregularEventsTitle)
     
@@ -18,19 +28,14 @@ final class CreatingTrackerViewController: UIViewController {
         
         setupView()
         setConstraints()
-        setupNavigationBar()
     }
     
     // MARK: - Setup UI
     
     private func setupView() {
         view.backgroundColor = .appWhite
+        view.addSubview(titleLabel)
         view.addSubview(buttonsStackView)
-    }
-    
-    private func setupNavigationBar() {
-        title = Constants.Text.creatingTrackerTitle
-        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
 }
@@ -41,6 +46,10 @@ extension CreatingTrackerViewController {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
             buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
