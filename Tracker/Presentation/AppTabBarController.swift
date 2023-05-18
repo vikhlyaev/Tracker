@@ -32,9 +32,9 @@ final class AppTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        tabBar.layer.borderColor = UIColor.appGray.cgColor
-        tabBar.layer.borderWidth = 0.5
-        tabBar.layer.masksToBounds = true
+        let borderTop = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.size.width, height: 0.5))
+        borderTop.backgroundColor = .black.withAlphaComponent(0.3)
+        tabBar.addSubview(borderTop)
     }
     
     private func setupTabItems() {
