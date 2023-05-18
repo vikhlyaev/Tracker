@@ -32,7 +32,7 @@ final class StatisticViewController: UIViewController {
     // MARK: - Setup UI
     
     private func setupView() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .appWhite
         view.addSubview(emptyStatisticImageView)
         view.addSubview(emptyStatisticLabel)
     }
@@ -46,7 +46,7 @@ final class StatisticViewController: UIViewController {
 // MARK: - Setting Constraints
 
 extension StatisticViewController {
-    
+
     private func setConstraints() {
         NSLayoutConstraint.activate([
             emptyStatisticImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
