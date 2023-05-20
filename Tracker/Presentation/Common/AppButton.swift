@@ -43,11 +43,9 @@ final class AppButton: UIButton {
 // MARK: - Setting Constraints
 
 extension AppButton {
-    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
 }
