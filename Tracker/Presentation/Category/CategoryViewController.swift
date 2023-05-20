@@ -2,21 +2,25 @@ import UIKit
 
 final class CategoryViewController: UIViewController {
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = Constants.Text.categoryTitle
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .appBlack
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    // MARK: - UI
+    
+    private lazy var titleLabel = AppTitleLabel(
+        with: Constants.Text.categoryTitle
+    )
+    
+    private lazy var placeholderView = AppPlaceholderView(
+        with: UIImage(named: Constants.Images.categoryEmptyCategoryList),
+        and: Constants.Text.categoryEmptyCategoryList
+    )
+    
+    private lazy var addCategoryButton = AppButton(with: "Добавить категорию") {
+        print("addCategoryButton")
+    }
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
     }
@@ -26,6 +30,8 @@ final class CategoryViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
+        view.addSubview(placeholderView)
+        view.addSubview(addCategoryButton)
     }
 }
 
@@ -36,7 +42,16 @@ extension CategoryViewController {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            placeholderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            placeholderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            addCategoryButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            addCategoryButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
     }
 }

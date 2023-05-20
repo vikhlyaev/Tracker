@@ -2,21 +2,18 @@ import UIKit
 
 final class NewIrregularEventViewController: UIViewController {
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = Constants.Text.newIrregularEventTitle
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .appBlack
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var titleLabel = AppTitleLabel(
+        with: Constants.Text.newIrregularEventTitle
+    )
+    
+    private lazy var trackerNameTextField = AppTextField(
+        with: Constants.Text.newIrregularEventTrackerNamePlaceholder
+    )
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
     }

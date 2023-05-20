@@ -2,22 +2,10 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
-    private lazy var emptyStatisticImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: Constants.Images.statisticEmptyStatistic)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private lazy var emptyStatisticLabel: UILabel = {
-        let label = UILabel()
-        label.text = Constants.Text.statisticEmptyStatistic
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .appBlack
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var placeholderView = AppPlaceholderView(
+        with: UIImage(named: Constants.Images.statisticEmptyStatistic),
+        and: Constants.Text.statisticEmptyStatistic
+    )
     
     // MARK: - Life Cycle
     
@@ -33,8 +21,7 @@ final class StatisticViewController: UIViewController {
     
     private func setupView() {
         view.backgroundColor = .appWhite
-        view.addSubview(emptyStatisticImageView)
-        view.addSubview(emptyStatisticLabel)
+        view.addSubview(placeholderView)
     }
     
     private func setupNavigationBar() {
@@ -49,15 +36,9 @@ extension StatisticViewController {
 
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            emptyStatisticImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyStatisticImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyStatisticImageView.widthAnchor.constraint(equalToConstant: 80),
-            emptyStatisticImageView.heightAnchor.constraint(equalToConstant: 80),
-            
-            emptyStatisticLabel.topAnchor.constraint(equalTo: emptyStatisticImageView.bottomAnchor, constant: 8),
-            emptyStatisticLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            emptyStatisticLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            emptyStatisticLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            placeholderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            placeholderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            placeholderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     

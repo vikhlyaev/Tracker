@@ -2,15 +2,11 @@ import UIKit
 
 final class CreatingTrackerViewController: UIViewController {
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = Constants.Text.creatingTrackerTitle
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .appBlack
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    // MARK: - UI
+    
+    private lazy var titleLabel = AppTitleLabel(
+        with: Constants.Text.creatingTrackerTitle
+    )
     
     private lazy var habitButton = AppButton(
         with: Constants.Text.creatingTrackerHabitButtonTitle
@@ -58,8 +54,8 @@ extension CreatingTrackerViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
