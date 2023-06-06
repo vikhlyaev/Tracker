@@ -1,13 +1,13 @@
 import UIKit
 
-struct Constants {
-    struct Images {
+enum Constants {
+    enum Images {
         static let trackersEmptyTrackerList = "icon-empty-tracker-list"
         static let statisticEmptyStatistic = "icon-empty-statistic"
         static let categoryEmptyCategoryList = "icon-empty-tracker-list"
     }
     
-    struct Text {
+    enum Text {
         static let trackersTitle = "Трекеры"
         static let trackersEmptyTrackerList = "Что будем отслеживать?"
         static let trackersSearchPlaceholder = "Поиск"
