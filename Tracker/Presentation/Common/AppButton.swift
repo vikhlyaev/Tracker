@@ -99,7 +99,7 @@ final class AppButton: UIButton {
 extension AppButton {
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 60)
+            heightAnchor.constraint(equalToConstant: height)
         ])
     }
 }
