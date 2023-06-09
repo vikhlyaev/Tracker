@@ -2,13 +2,8 @@ import UIKit
 
 final class NewIrregularEventViewController: UIViewController {
     
-    private lazy var titleLabel = AppTitleLabel(
-        with: Constants.Text.newIrregularEventTitle
-    )
-    
-    private lazy var trackerNameTextField = AppTextField(
-        with: Constants.Text.newIrregularEventTrackerNamePlaceholder
-    )
+    private lazy var titleLabel = AppTitleLabel(with: "Новое нерегулярное событие")
+    private lazy var trackerNameTextField = AppTextField(with: "Введите название трекера")
     
     // MARK: - Life Cycle
     

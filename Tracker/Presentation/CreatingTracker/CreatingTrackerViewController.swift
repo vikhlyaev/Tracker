@@ -4,20 +4,14 @@ final class CreatingTrackerViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(
-        with: Constants.Text.creatingTrackerTitle
-    )
+    private lazy var titleLabel = AppTitleLabel(with: "Создание трекера")
     
-    private lazy var habitButton = AppButton(
-        with: Constants.Text.creatingTrackerHabitButtonTitle
-    ) { [weak self] in
+    private lazy var habitButton = AppButton(title: "Привычка") { [weak self] in
         let newHabitViewController = NewHabitViewController()
         self?.present(newHabitViewController, animated: true)
     }
     
-    private lazy var irregularEventsButton = AppButton(
-        with: Constants.Text.creatingTrackerIrregularEventsTitle
-    ) { [weak self] in
+    private lazy var irregularEventsButton = AppButton(title: "Нерегулярные событие") { [weak self] in
         let newIrregularEventViewController = NewIrregularEventViewController()
         self?.present(newIrregularEventViewController, animated: true)
     }

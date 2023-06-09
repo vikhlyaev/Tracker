@@ -3,8 +3,8 @@ import UIKit
 final class StatisticViewController: UIViewController {
     
     private lazy var placeholderView = AppPlaceholderView(
-        with: UIImage(named: Constants.Images.statisticEmptyStatistic),
-        and: Constants.Text.statisticEmptyStatistic
+        with: UIImage(named: "icon-empty-statistic"),
+        and: "Анализировать пока нечего"
     )
     
     // MARK: - Life Cycle
@@ -25,7 +25,7 @@ final class StatisticViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = Constants.Text.statisticTitle
+        title = "Статистика"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 }

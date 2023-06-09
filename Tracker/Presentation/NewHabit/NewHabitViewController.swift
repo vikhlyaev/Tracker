@@ -2,13 +2,10 @@ import UIKit
 
 final class NewHabitViewController: UIViewController {
     
-    private lazy var titleLabel = AppTitleLabel(
-        with: Constants.Text.newHabitTitle
-    )
+    // MARK: - UI
     
-    private lazy var trackerNameTextField = AppTextField(
-        with: Constants.Text.newHabitTrackerNamePlaceholder
-    )
+    private lazy var titleLabel = AppTitleLabel(with: "Новая привычка")
+    private lazy var trackerNameTextField = AppTextField(with: "Введите название трекера")
     
     // MARK: - Life Cycle
     
@@ -38,8 +35,7 @@ extension NewHabitViewController {
             
             trackerNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             trackerNameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            trackerNameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            trackerNameTextField.heightAnchor.constraint(equalToConstant: 75)
+            trackerNameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
 }
