@@ -5,7 +5,7 @@ struct Tracker {
     let name: String
     let color: UIColor
     let emoji: String
-    let schedule: [WeekDay]
+    let schedule: [WeekDay]?
 }
 
 typealias Trackers = [Tracker]
