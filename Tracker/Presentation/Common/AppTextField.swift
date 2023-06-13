@@ -17,7 +17,7 @@ final class AppTextField: UITextField {
         leftViewMode = .always
         clearButtonMode = .always
         layer.cornerRadius = 10
-        backgroundColor = .appBackground.withAlphaComponent(0.3)
+        backgroundColor = .appBackground
         self.placeholder = placeholder
         translatesAutoresizingMaskIntoConstraints = false
     }
