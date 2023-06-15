@@ -35,7 +35,7 @@ final class WeekdayCell: UITableViewCell {
     }
     
     func configure(with day: WeekDay) {
-        weekdayLabel.text = day.rawValue
+        weekdayLabel.text = day.title
     }
     
     func changeSwitch() {
