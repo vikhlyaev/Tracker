@@ -26,7 +26,7 @@ final class NewIrregularEventViewController: UIViewController {
 extension NewIrregularEventViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
