@@ -16,11 +16,13 @@ final class CreatingTrackerViewController: UIViewController {
         self?.present(newIrregularEventViewController, animated: true)
     }
     
-    private lazy var buttonsStackView = UIStackView(
-        arrangedSubviews: [habitButton, irregularEventsButton],
-        axis: .vertical,
-        spacing: 16
-    )
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [habitButton, irregularEventsButton])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     // MARK: - Life Cycle
     
