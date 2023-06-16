@@ -2,6 +2,8 @@ import UIKit
 
 final class WeekdayCell: UITableViewCell {
     
+    // MARK: - UI
+    
     private lazy var weekdayLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17)
@@ -13,9 +15,15 @@ final class WeekdayCell: UITableViewCell {
     private lazy var weekdaySwitch: UISwitch = {
         let weekdaySwitch = UISwitch()
         weekdaySwitch.onTintColor = .appBlue
+        weekdaySwitch.addTarget(self, action: #selector(weekdaySwitchTapped), for: .valueChanged)
         weekdaySwitch.translatesAutoresizingMaskIntoConstraints = false
         return weekdaySwitch
     }()
+    
+    private var currentDay: WeekDay?
+    weak var delegate: WeekdayCellDelegate?
+    
+    // MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,6 +35,8 @@ final class WeekdayCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup UI
+    
     private func setupView() {
         backgroundColor = .appBackground
         selectionStyle = .none
@@ -35,11 +45,24 @@ final class WeekdayCell: UITableViewCell {
     }
     
     func configure(with day: WeekDay) {
+        currentDay = day
         weekdayLabel.text = day.title
     }
     
-    func changeSwitch() {
-        weekdaySwitch.isOn ? weekdaySwitch.setOn(false, animated: true) : weekdaySwitch.setOn(true, animated: true)
+    func isSelectedDay() {
+        weekdaySwitch.setOn(true, animated: false)
+    }
+    
+    // MARK: - Action
+    
+    @objc
+    private func weekdaySwitchTapped() {
+        guard let currentDay else { return }
+        if weekdaySwitch.isOn {
+            delegate?.didSelectDay(currentDay)
+        } else {
+            delegate?.didDeselectDay(currentDay)
+        }
     }
 }
 
