@@ -13,9 +13,15 @@ final class ScheduleViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var doneButton = AppButton(title: "Готово") {
-        print("done")
+    private lazy var doneButton = AppButton(title: "Готово") { [weak self] in
+        guard let self else { return }
+        self.delegate?.didSelectDays(self.selectedDays)
+        self.dismiss(animated: true)
     }
+    
+    private var selectedDays: Set<WeekDay> = []
+    
+    weak var delegate: ScheduleDelegate?
     
     // MARK: - Life Cycle
     
@@ -27,6 +33,15 @@ final class ScheduleViewController: UIViewController {
     }
     
     // MARK: - Setup UI
+    
+    init(with selectedDays: Set<WeekDay>) {
+        self.selectedDays = selectedDays
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private func setupView() {
         view.backgroundColor = .appWhite
@@ -41,6 +56,18 @@ final class ScheduleViewController: UIViewController {
     }
 }
 
+// MARK: - WeekdayCellDelegate
+
+extension ScheduleViewController: WeekdayCellDelegate {
+    func didSelectDay(_ day: WeekDay) {
+        selectedDays.insert(day)
+    }
+    
+    func didDeselectDay(_ day: WeekDay) {
+        selectedDays.remove(day)
+    }
+}
+
 // MARK: - UITableViewDataSource
 
 extension ScheduleViewController: UITableViewDataSource {
@@ -50,7 +77,12 @@ extension ScheduleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: WeekdayCell.self)
-        cell.configure(with: WeekDay.allCases[indexPath.row])
+        let currentDay = WeekDay.allCases[indexPath.row]
+        cell.delegate = self
+        cell.configure(with: currentDay)
+        if selectedDays.contains(currentDay) {
+            cell.isSelectedDay()
+        }
         return cell
     }
 }
@@ -58,12 +90,6 @@ extension ScheduleViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension ScheduleViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? WeekdayCell else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
-        cell.changeSwitch()
-    }
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             cell.layer.masksToBounds = true
