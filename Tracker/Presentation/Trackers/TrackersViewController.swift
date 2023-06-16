@@ -81,7 +81,7 @@ final class TrackersViewController: UIViewController {
         view.addSubview(trackersCollectionView)
     }
     
-    private func isEmptyCollectionView() {
+    private func isEmptyVisibleCategories() {
         visibleCategories.isEmpty ? showPlaceholder() : showCollectionView()
     }
     
@@ -148,7 +148,7 @@ final class TrackersViewController: UIViewController {
             if trackers.isEmpty { return nil }
             return TrackerCategory(name: $0.name, trackers: trackers)
         }
-        isEmptyCollectionView()
+        isEmptyVisibleCategories()
         trackersCollectionView.reloadData()
     }
 }
