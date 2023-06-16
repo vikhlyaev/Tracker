@@ -7,5 +7,3 @@ struct Tracker {
     let emoji: String
     let schedule: [WeekDay]?
 }
-
-typealias Trackers = [Tracker]
