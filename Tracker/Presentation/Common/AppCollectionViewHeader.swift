@@ -2,8 +2,6 @@ import UIKit
 
 final class AppCollectionViewHeader: UICollectionReusableView {
     
-    static let reuseIdentifier = String(describing: AppCollectionViewHeader.self)
-    
     private lazy var headerTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
