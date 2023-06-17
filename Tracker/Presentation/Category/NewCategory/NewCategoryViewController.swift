@@ -6,15 +6,29 @@ final class NewCategoryViewController: UIViewController {
     
     private lazy var titleLabel = AppTitleLabel(with: "Новая категория")
     private lazy var newCategoryNameTextField = AppTextField(with: "Введите название категории")
-    private lazy var finishedButton: AppButton = {
-        let button = AppButton(title: "Готово") {
-            print("finishedButton")
-        }
-        button.isEnabled = false
-        return button
-    }()
+    
+    private lazy var finishedButton = AppButton(title: "Готово") { [weak self] in
+        guard
+            let self,
+            let text = self.newCategoryNameTextField.text,
+            text != ""
+        else { return }
+        self.delegate?.didCreateNewCategory(with: text)
+        self.dismiss(animated: true)
+    }
+    
+    private weak var delegate: NewCategoryDelegate?
     
     // MARK: - Life Cycle
+    
+    init(delegate: NewCategoryDelegate) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +44,7 @@ final class NewCategoryViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(newCategoryNameTextField)
         view.addSubview(finishedButton)
+        finishedButton.isEnabled = false
     }
     
     private func setDelegates() {
@@ -40,8 +55,10 @@ final class NewCategoryViewController: UIViewController {
 // MARK: - UITextFieldDelegate
 
 extension NewCategoryViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        finishedButton.isEnabled = true
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let text = textField.text ?? ""
+        let symbols = text.filter { $0.isNumber || $0.isLetter || $0.isSymbol || $0.isPunctuation }.count
+        finishedButton.isEnabled = symbols != 0
     }
 }
 

@@ -42,6 +42,8 @@
 		0AD79E832A1A2EA900DBE2EC /* UITableView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD79E822A1A2EA900DBE2EC /* UITableView + Extensions.swift */; };
 		0AFCE8802A3C92A000C2D472 /* UICollectionView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE87F2A3C92A000C2D472 /* UICollectionView + Extensions.swift */; };
 		0AFCE8822A3C92C300C2D472 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE8812A3C92C300C2D472 /* Reusable.swift */; };
+		0AFCE8852A3CCB9E00C2D472 /* NewCategoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE8842A3CCB9E00C2D472 /* NewCategoryDelegate.swift */; };
+		0AFCE8882A3DDBB200C2D472 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE8872A3DDBB200C2D472 /* MockData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		0AD79E822A1A2EA900DBE2EC /* UITableView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extensions.swift"; sourceTree = "<group>"; };
 		0AFCE87F2A3C92A000C2D472 /* UICollectionView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView + Extensions.swift"; sourceTree = "<group>"; };
 		0AFCE8812A3C92C300C2D472 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		0AFCE8842A3CCB9E00C2D472 /* NewCategoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryDelegate.swift; sourceTree = "<group>"; };
+		0AFCE8872A3DDBB200C2D472 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +121,7 @@
 				0A2378112A0CB39400B8B2AD /* Application */,
 				0AD79E7B2A1A266600DBE2EC /* Models */,
 				0A2378122A0CB3B100B8B2AD /* Presentation */,
+				0AFCE8862A3DDB8F00C2D472 /* Services */,
 				0A2378132A0CB5CB00B8B2AD /* Extensions */,
 				0A2378102A0CB38A00B8B2AD /* Resources */,
 				0A23780F2A0CB37F00B8B2AD /* Supporting Files */,
@@ -310,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				0A5893B62A17F5DA00A80732 /* NewCategoryViewController.swift */,
+				0AFCE8842A3CCB9E00C2D472 /* NewCategoryDelegate.swift */,
 			);
 			path = NewCategory;
 			sourceTree = "<group>";
@@ -320,6 +326,14 @@
 				0AD79E802A1A2E9000DBE2EC /* CategoryListCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		0AFCE8862A3DDB8F00C2D472 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0AFCE8872A3DDBB200C2D472 /* MockData.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,6 +415,7 @@
 				0AC3652A2A2F7CBB00FE6283 /* Tracker.swift in Sources */,
 				0A4F4F0C2A3700830073301A /* AppCollectionViewHeader.swift in Sources */,
 				0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */,
+				0AFCE8852A3CCB9E00C2D472 /* NewCategoryDelegate.swift in Sources */,
 				0A5893AE2A166F4000A80732 /* CategoryViewController.swift in Sources */,
 				0A5893A82A165DC900A80732 /* NewHabitViewController.swift in Sources */,
 				0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */,
@@ -410,6 +425,7 @@
 				0AFCE8802A3C92A000C2D472 /* UICollectionView + Extensions.swift in Sources */,
 				0A4F4F062A35FC3C0073301A /* SettingsCell.swift in Sources */,
 				0A5893B92A17F68A00A80732 /* AppTextField.swift in Sources */,
+				0AFCE8882A3DDBB200C2D472 /* MockData.swift in Sources */,
 				0A5893B72A17F5DA00A80732 /* NewCategoryViewController.swift in Sources */,
 				0AB8A57C2A155FB1005E239F /* CreatingTrackerViewController.swift in Sources */,
 				0A2377DC2A0CB18800B8B2AD /* AppDelegate.swift in Sources */,
