@@ -70,8 +70,42 @@ final class NewHabitViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var createButton = AppButton(title: "Создать") {
-        print("createButton")
+    private lazy var createButton = AppButton(title: "Создать") { [weak self] in
+        guard
+            let self,
+            let name,
+            let selectedColor,
+            let selectedEmoji,
+            let selectedCategory
+        else { return }
+        
+        let newTracker = Tracker(
+            name: name,
+            color: selectedColor,
+            emoji: selectedEmoji,
+            schedule: Array(self.selectedDays)
+        )
+        
+        if MockData.shared.categories.contains(where: { $0.name == selectedCategory.name }) {
+            guard let existedCategory = MockData.shared.categories.filter({ $0.name == selectedCategory.name }).first else { return }
+            var otherCategories = MockData.shared.categories.filter { $0.name != selectedCategory.name }
+            var trackers = existedCategory.trackers
+            trackers.append(newTracker)
+            let updatedCategory = TrackerCategory(name: existedCategory.name, trackers: trackers)
+            otherCategories.append(updatedCategory)
+            MockData.shared.categories = otherCategories
+        } else {
+            MockData.shared.categories.append(
+                TrackerCategory(name: selectedCategory.name, trackers: [newTracker])
+            )
+        }
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: "reload"),
+            object: nil
+        )
+
+        self.dismiss(animated: true)
     }
     
     private lazy var cancelButton = AppButton(title: "Отменить", style: .cancel) { [weak self] in
@@ -93,9 +127,30 @@ final class NewHabitViewController: UIViewController {
         .color([.colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6, .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12, .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18])
     ]
     
+    private var name: String? {
+        didSet {
+            checkRequiredSettings()
+        }
+    }
     private var selectedDays: Set<WeekDay> = []
-    private var selectedEmoji: String?
-    private var selectedColor: UIColor?
+    
+    private var selectedCategory: TrackerCategory? {
+        didSet {
+            checkRequiredSettings()
+        }
+    }
+    
+    private var selectedEmoji: String? {
+        didSet {
+            checkRequiredSettings()
+        }
+    }
+    
+    private var selectedColor: UIColor? {
+        didSet {
+            checkRequiredSettings()
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -116,6 +171,7 @@ final class NewHabitViewController: UIViewController {
         scrollView.addSubview(settingsTableView)
         scrollView.addSubview(settingsCollectionView)
         scrollView.addSubview(buttonsStackView)
+        createButton.isEnabled = false
     }
     
     private func setDelegates() {
@@ -123,6 +179,25 @@ final class NewHabitViewController: UIViewController {
         settingsTableView.dataSource = self
         settingsCollectionView.delegate = self
         settingsCollectionView.dataSource = self
+        trackerNameTextField.delegate = self
+    }
+    
+    private func checkRequiredSettings() {
+        if name != nil && selectedCategory != nil && selectedEmoji != nil && selectedColor != nil {
+            createButton.isEnabled = true
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension NewHabitViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let text = textField.text ?? ""
+        let symbols = text.filter { $0.isNumber || $0.isLetter || $0.isSymbol || $0.isPunctuation }.count
+        if symbols != 0 {
+            name = text
+        }
     }
 }
 
@@ -149,7 +224,8 @@ extension NewHabitViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
         switch cell.tag {
         case 0:
-            let categoryViewController = CategoryViewController()
+            let categoryViewController = CategoryViewController(with: selectedCategory)
+            categoryViewController.delegate = self
             present(categoryViewController, animated: true)
         case 1:
             let scheduleViewController = ScheduleViewController(with: selectedDays)
@@ -226,6 +302,13 @@ extension NewHabitViewController: UICollectionViewDelegate {
             $0.section == indexPath.section && $0.item != indexPath.item && $0.row != indexPath.row
         }
         filteredItems.forEach { collectionView.deselectItem(at: $0, animated: false) }
+        
+        switch settings[indexPath.section] {
+        case .emoji(let emojiItems):
+            selectedEmoji = emojiItems[indexPath.item]
+        case .color(let colorItems):
+            selectedColor = colorItems[indexPath.item]
+        }
     }
 }
 
@@ -253,6 +336,18 @@ extension NewHabitViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - CategoryDelegate
+
+extension NewHabitViewController: CategoryDelegate {
+    func didSelectCategory(_ selectedCategory: TrackerCategory) {
+        self.selectedCategory = selectedCategory
+        let categoryCell = settingsTableView.visibleCells.filter({
+            $0.tag == SettingsTableViewSection.category.rawValue
+        }).first as? SettingsCell
+        categoryCell?.updateSelectedSettings(selectedCategory.name)
+    }
+}
+
 // MARK: - ScheduleDelegate
 
 extension NewHabitViewController: ScheduleDelegate {
@@ -262,14 +357,14 @@ extension NewHabitViewController: ScheduleDelegate {
     }
     
     private func updateScheduleCell(days: [WeekDay]) {
-        let selectedSettings = days
+        let selectedDays = days
             .sorted(by: { $0.rawValue < $1.rawValue })
             .map { $0.shortTitle }
             .joined(separator: ", ")
         let scheduleCell = settingsTableView.visibleCells.filter({
             $0.tag == SettingsTableViewSection.schedule.rawValue
         }).first as? SettingsCell
-        scheduleCell?.updateSelectedSettings(selectedSettings)
+        scheduleCell?.updateSelectedSettings(selectedDays)
     }
 }
 
