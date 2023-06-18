@@ -38,7 +38,6 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Data Source
     private var categories = MockData.shared.categories
-    
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
     
@@ -46,6 +45,7 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addObserver()
         setupView()
         setConstraints()
         setupNavigationBar()
@@ -129,6 +129,22 @@ final class TrackersViewController: UIViewController {
             return TrackerCategory(name: $0.name, trackers: trackers)
         }
         isEmptyVisibleCategories()
+        trackersCollectionView.reloadData()
+    }
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadCollectionView),
+            name: NSNotification.Name(rawValue: "reload"),
+            object: nil
+        )
+    }
+    
+    @objc
+    private func reloadCollectionView() {
+        categories = MockData.shared.categories
+        dateChanged()
         trackersCollectionView.reloadData()
     }
 }
