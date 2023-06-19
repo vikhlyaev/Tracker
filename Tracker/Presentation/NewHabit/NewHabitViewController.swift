@@ -40,6 +40,7 @@ final class NewHabitViewController: UIViewController {
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.keyboardDismissMode = .onDrag
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -198,6 +199,10 @@ extension NewHabitViewController: UITextFieldDelegate {
         if symbols != 0 {
             name = text
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 
