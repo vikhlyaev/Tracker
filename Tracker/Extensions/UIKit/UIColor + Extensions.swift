@@ -20,7 +20,7 @@ extension UIColor {
         UIColor { (traits) -> UIColor in
             traits.userInterfaceStyle == .light ?
             UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 0.30) :
-            UIColor(red: 0.10, green: 0.10, blue: 0.10, alpha: 0.85)
+            UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 0.85)
         }
     }
     static let appGray = UIColor(red: 0.68, green: 0.69, blue: 0.71, alpha: 1.00)
