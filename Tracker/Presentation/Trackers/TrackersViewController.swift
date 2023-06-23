@@ -23,6 +23,7 @@ final class TrackersViewController: UIViewController {
     private lazy var trackersCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .appWhite
         collectionView.register(
             TrackerCell.self,
             forCellWithReuseIdentifier: TrackerCell.reuseIdentifier
