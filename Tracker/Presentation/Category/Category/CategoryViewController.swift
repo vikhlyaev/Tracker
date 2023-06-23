@@ -11,8 +11,8 @@ final class CategoryViewController: UIViewController {
         and: "Привычки и события можно объединить по смыслу"
     )
     
-    private lazy var categoriesTableView: UITableView = {
-        let tableView = UITableView(frame: .zero)
+    private lazy var categoriesTableView: AppTableView = {
+        let tableView = AppTableView(frame: .zero)
         tableView.bounces = false
         tableView.allowsMultipleSelection = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -102,27 +102,11 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
-        let indexLastCell = tableView.numberOfRows(inSection: indexPath.section) - 1
-        let indexCurrentCell = indexPath.row
-        
         cell.prepareForReuse()
-        
         cell.textLabel?.text = categories[indexPath.row].name
         cell.backgroundColor = .appBackground
         cell.layer.masksToBounds = true
         cell.selectionStyle = .none
-        
-        if indexCurrentCell == 0 && indexCurrentCell == indexLastCell {
-            cell.layer.cornerRadius = 10
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        } else if indexCurrentCell == 0 {
-            cell.layer.cornerRadius = 10
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        } else if indexCurrentCell == indexLastCell {
-            cell.layer.cornerRadius = 10
-            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        }
-        
         guard
             let selectedCategory,
             selectedCategory == categories[indexPath.row]
@@ -151,13 +135,7 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let indexLastCell = tableView.numberOfRows(inSection: indexPath.section) - 1
-        let indexCurrentCell = indexPath.row
-        if indexCurrentCell == 0 && indexCurrentCell == indexLastCell {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-        } else if indexCurrentCell == 0 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        } else if indexCurrentCell == indexLastCell {
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         } else {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -182,7 +160,6 @@ extension CategoryViewController {
             categoriesTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             categoriesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            categoriesTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -16),
             
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
