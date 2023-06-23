@@ -7,13 +7,11 @@ final class CreatingTrackerViewController: UIViewController {
     private lazy var titleLabel = AppTitleLabel(with: "Создание трекера")
     
     private lazy var habitButton = AppButton(title: "Привычка") { [weak self] in
-        let newHabitViewController = NewHabitViewController()
-        self?.present(newHabitViewController, animated: true)
+        self?.present(NewTrackerViewController(with: .habit), animated: true)
     }
     
     private lazy var irregularEventsButton = AppButton(title: "Нерегулярные событие") { [weak self] in
-        let newIrregularEventViewController = NewIrregularEventViewController()
-        self?.present(newIrregularEventViewController, animated: true)
+        self?.present(NewTrackerViewController(with: .irregularEvent), animated: true)
     }
     
     private lazy var buttonsStackView: UIStackView = {
