@@ -52,7 +52,6 @@ final class AppPlaceholderView: UIView {
     private func setupView(with image: UIImage?, and text: String) {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(emptyStackView)
-        
         emptyImageView.image = image
         emptyLabel.text = text
     }
