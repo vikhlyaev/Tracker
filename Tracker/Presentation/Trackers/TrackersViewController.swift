@@ -127,7 +127,11 @@ final class TrackersViewController: UIViewController {
                 $0.schedule?.contains { $0.numberValue == weekDay } == true
             }
             if trackers.isEmpty { return nil }
-            return TrackerCategory(name: $0.name, trackers: trackers)
+            return TrackerCategory(
+                id: $0.id,
+                name: $0.name,
+                trackers: trackers
+            )
         }
         isEmptyVisibleCategories()
         trackersCollectionView.reloadData()
@@ -182,7 +186,11 @@ extension TrackersViewController: UISearchBarDelegate {
             visibleCategories = visibleCategories.compactMap {
                 let trackers = $0.trackers.filter { $0.name.lowercased().contains(searchText.lowercased()) }
                 if trackers.isEmpty { return nil }
-                return TrackerCategory(name: $0.name, trackers: trackers)
+                return TrackerCategory(
+                    id: $0.id,
+                    name: $0.name,
+                    trackers: trackers
+                )
             }
             trackersCollectionView.reloadData()
         }
