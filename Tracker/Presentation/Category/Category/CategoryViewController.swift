@@ -88,7 +88,13 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: NewCategoryDelegate {
     func didCreateNewCategory(with name: String) {
-        categories.append(TrackerCategory(name: name, trackers: []))
+        categories.append(
+            TrackerCategory(
+                id: UUID(),
+                name: name,
+                trackers: []
+            )
+        )
         categoriesTableView.reloadData()
     }
 }
