@@ -1,6 +1,10 @@
 import UIKit
 
-final class ColorMarshallImpl: ColorMarshall {
+final class ColorMarshall {
+    
+    static let shared = ColorMarshall()
+    
+    private init() {}
     
     func encode(color: UIColor) -> String {
         var red: CGFloat = 0
