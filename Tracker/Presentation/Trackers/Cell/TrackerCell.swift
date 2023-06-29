@@ -108,7 +108,6 @@ final class TrackerCell: UICollectionViewCell {
     private func pluralizeDays(_ number: Int) -> String {
         let remainder10 = number % 10
         let remainder100 = number % 100
-        
         if remainder10 == 1 && remainder100 != 11 {
             return "\(number) день"
         } else if remainder10 >= 2 && remainder10 <= 4 && (remainder100 < 10 || remainder100 >= 20) {
