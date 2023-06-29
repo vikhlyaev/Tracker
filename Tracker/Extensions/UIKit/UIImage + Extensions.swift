@@ -1,8 +1,6 @@
-//
-//  UIImage + Extensions.swift
-//  Tracker
-//
-//  Created by Anton Vikhlyaev on 29.06.2023.
-//
+import UIKit
 
-import Foundation
+extension UIImage {
+    static let emptyList = UIImage(named: "icon-empty-tracker-list")
+    static let emptyStatistic = UIImage(named: "icon-empty-statistic")
+}
