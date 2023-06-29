@@ -4,10 +4,7 @@ final class StatisticViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var placeholderView = AppPlaceholderView(
-        with: UIImage.emptyStatistic,
-        and: "Анализировать пока нечего"
-    )
+    private lazy var placeholderView = AppPlaceholderView(image: UIImage.emptyStatistic, text: "Анализировать пока нечего")
     
     // MARK: - Life Cycle
     

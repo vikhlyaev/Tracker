@@ -31,7 +31,7 @@ final class AppPlaceholderView: UIView {
     
     // MARK: - Init
     
-    init(with image: UIImage?, and text: String) {
+    init(image: UIImage?, text: String) {
         super.init(frame: .zero)
         setupView(with: image, and: text)
         setConstraints()
