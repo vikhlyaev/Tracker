@@ -2,7 +2,7 @@ import UIKit
 
 final class ScheduleViewController: UIViewController {
     
-    private lazy var titleLabel = AppTitleLabel(with: "Расписание")
+    private lazy var titleLabel = AppTitleLabel(title: "Расписание")
     
     private lazy var weekDaysTableView: UITableView = {
         let tableView = UITableView(frame: .zero)

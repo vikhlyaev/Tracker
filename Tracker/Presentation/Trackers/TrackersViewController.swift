@@ -5,7 +5,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - UI
     
     private lazy var placeholderView = AppPlaceholderView(
-        with: UIImage(named: "icon-empty-tracker-list"),
+        with: UIImage.emptyList,
         and: "Что будем отслеживать?"
     )
     
@@ -39,8 +39,8 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Data Source
     private var categories = MockData.shared.categories
-    private var visibleCategories: [TrackerCategory] = []
-    private var completedTrackers: Set<TrackerRecord> = []
+    private var visibleCategories: [Category] = []
+    private var completedTrackers: Set<Record> = []
     
     // MARK: - Life Cycle
     
@@ -127,7 +127,7 @@ final class TrackersViewController: UIViewController {
                 $0.schedule?.contains { $0.numberValue == weekDay } == true
             }
             if trackers.isEmpty { return nil }
-            return TrackerCategory(
+            return Category(
                 id: $0.id,
                 name: $0.name,
                 trackers: trackers
@@ -159,7 +159,7 @@ final class TrackersViewController: UIViewController {
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
         if datePicker.date < Date() {
-            let trackerRecord = TrackerRecord(taskId: id, executionDate: datePicker.date)
+            let trackerRecord = Record(taskId: id, executionDate: datePicker.date)
             completedTrackers.insert(trackerRecord)
             trackersCollectionView.reloadItems(at: [indexPath])
         }
@@ -186,7 +186,7 @@ extension TrackersViewController: UISearchBarDelegate {
             visibleCategories = visibleCategories.compactMap {
                 let trackers = $0.trackers.filter { $0.name.lowercased().contains(searchText.lowercased()) }
                 if trackers.isEmpty { return nil }
-                return TrackerCategory(
+                return Category(
                     id: $0.id,
                     name: $0.name,
                     trackers: trackers

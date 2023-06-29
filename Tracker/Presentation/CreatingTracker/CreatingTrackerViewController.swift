@@ -4,7 +4,7 @@ final class CreatingTrackerViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(with: "Создание трекера")
+    private lazy var titleLabel = AppTitleLabel(title: "Создание трекера")
     
     private lazy var habitButton = AppButton(title: "Привычка") { [weak self] in
         self?.present(NewTrackerViewController(with: .habit), animated: true)
