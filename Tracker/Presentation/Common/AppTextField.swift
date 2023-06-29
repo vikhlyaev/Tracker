@@ -2,7 +2,7 @@ import UIKit
 
 final class AppTextField: UITextField {
     
-    init(with placeholder: String) {
+    init(placeholder: String) {
         super.init(frame: .zero)
         setupView(with: placeholder)
         setConstraints()

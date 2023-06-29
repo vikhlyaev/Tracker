@@ -2,7 +2,7 @@ import UIKit
 
 final class AppTitleLabel: UILabel {
     
-    init(with title: String) {
+    init(title: String) {
         super.init(frame: .zero)
         setupView(with: title)
     }
