@@ -7,11 +7,11 @@ final class CategoryViewController: UIViewController {
     private lazy var titleLabel = AppTitleLabel(with: "Категория")
     
     private lazy var placeholderView = AppPlaceholderView(
-        with: UIImage(named: "icon-empty-tracker-list"),
+        with: UIImage.emptyList,
         and: "Привычки и события можно объединить по смыслу"
     )
     
-    private lazy var categoriesTableView: AppTableView = {
+    private lazy var tableView: AppTableView = {
         let tableView = AppTableView(frame: .zero)
         tableView.bounces = false
         tableView.allowsMultipleSelection = false
@@ -30,14 +30,18 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private var categories = MockData.shared.categories
-    private var selectedCategory: TrackerCategory?
+    private lazy var store: CategoryStore? = {
+        guard let dataStore = try? DataStoreImpl() else { return nil }
+        return CategoryStore(dataStore: dataStore, delegate: self)
+    }()
+    
+    private var selectedCategory: Category?
     
     weak var delegate: CategoryDelegate?
     
     // MARK: - Life Cycle
     
-    init(with selectedCategory: TrackerCategory?) {
+    init(with selectedCategory: Category?) {
         self.selectedCategory = selectedCategory
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,42 +64,50 @@ final class CategoryViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
         view.addSubview(placeholderView)
-        view.addSubview(categoriesTableView)
+        view.addSubview(tableView)
         view.addSubview(addCategoryButton)
     }
     
     private func setDelegates() {
-        categoriesTableView.dataSource = self
-        categoriesTableView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     private func isEmptyCategories() {
-        categories.isEmpty ? showPlaceholder() : showCollectionView()
+        guard let store else { return }
+        store.isEmpty ? showPlaceholder() : showCollectionView()
     }
     
     private func showPlaceholder() {
         placeholderView.isHidden = false
-        categoriesTableView.isHidden = true
+        tableView.isHidden = true
     }
     
     private func showCollectionView() {
         placeholderView.isHidden = true
-        categoriesTableView.isHidden = false
+        tableView.isHidden = false
     }
 }
 
 // MARK: - NewCategoryDelegate
 
 extension CategoryViewController: NewCategoryDelegate {
-    func didCreateNewCategory(with name: String) {
-        categories.append(
-            TrackerCategory(
-                id: UUID(),
-                name: name,
-                trackers: []
-            )
-        )
-        categoriesTableView.reloadData()
+    func didCreateNewCategory(_ category: Category) {
+        store?.add(category)
+        isEmptyCategories()
+    }
+}
+
+// MARK: - StoreDelegate
+
+extension CategoryViewController: StoreDelegate {
+    func didUpdate(_ update: StoreUpdate) {
+        tableView.performBatchUpdates {
+            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
+            tableView.insertRows(at: insertedIndexPaths, with: .automatic)
+            tableView.deleteRows(at: deletedIndexPaths, with: .fade)
+        }
     }
 }
 
@@ -103,19 +115,20 @@ extension CategoryViewController: NewCategoryDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categories.count
+        store?.numberOfRowsInSection(section) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
+        guard let category = store?.object(at: indexPath) else { return cell }
         cell.prepareForReuse()
-        cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.text = category.name
         cell.backgroundColor = .appBackground
         cell.layer.masksToBounds = true
         cell.selectionStyle = .none
         guard
             let selectedCategory,
-            selectedCategory == categories[indexPath.row]
+            selectedCategory == category
         else { return cell }
         cell.setSelected(true, animated: true)
         cell.accessoryType = .checkmark
@@ -127,13 +140,16 @@ extension CategoryViewController: UITableViewDataSource {
 
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        guard
+            let cell = tableView.cellForRow(at: indexPath),
+            let category = store?.object(at: indexPath)
+        else { return }
         tableView.visibleCells.forEach {
             $0.setSelected(false, animated: true)
             $0.accessoryType = .none
         }
         cell.accessoryType = .checkmark
-        delegate?.didSelectCategory(categories[indexPath.row])
+        delegate?.didSelectCategory(category)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -142,9 +158,19 @@ extension CategoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.separatorInset = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: .greatestFiniteMagnitude
+            )
         } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            cell.separatorInset = UIEdgeInsets(
+                top: 0,
+                left: 16,
+                bottom: 0,
+                right: 16
+            )
         }
     }
 }
@@ -163,9 +189,10 @@ extension CategoryViewController {
             placeholderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             placeholderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            categoriesTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            categoriesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            categoriesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(lessThanOrEqualTo: addCategoryButton.topAnchor, constant: -16),
             
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),

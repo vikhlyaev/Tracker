@@ -5,6 +5,7 @@ final class NewCategoryViewController: UIViewController {
     // MARK: - UI
     
     private lazy var titleLabel = AppTitleLabel(with: "Новая категория")
+    
     private lazy var newCategoryNameTextField = AppTextField(with: "Введите название категории")
     
     private lazy var finishedButton = AppButton(title: "Готово") { [weak self] in
@@ -13,7 +14,12 @@ final class NewCategoryViewController: UIViewController {
             let text = self.newCategoryNameTextField.text,
             text != ""
         else { return }
-        self.delegate?.didCreateNewCategory(with: text)
+        let newCategory = Category(
+            id: UUID(),
+            name: text,
+            trackers: []
+        )
+        self.delegate?.didCreateNewCategory(newCategory)
         self.dismiss(animated: true)
     }
     
