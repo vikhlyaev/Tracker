@@ -4,13 +4,9 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(
-        with: trackerType.title
-    )
+    private lazy var titleLabel = AppTitleLabel(title: trackerType.title)
     
-    private lazy var trackerNameTextField = AppTextField(
-        with: "Введите название трекера"
-    )
+    private lazy var textField = AppTextField(placeholder: "Введите название трекера")
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -19,7 +15,7 @@ final class NewTrackerViewController: UIViewController {
         return scrollView
     }()
     
-    private lazy var settingsTableView: AppTableView = {
+    private lazy var tableView: AppTableView = {
         let tableView = AppTableView(frame: .zero)
         tableView.separatorInset = UIEdgeInsets(
             top: 0,
@@ -34,7 +30,7 @@ final class NewTrackerViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var settingsCollectionView: AppCollectionView = {
+    private lazy var collectionView: AppCollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = AppCollectionView(
             frame: .zero,
@@ -62,58 +58,15 @@ final class NewTrackerViewController: UIViewController {
             let selectedCategory
         else { return }
         
-        if self.selectedDays.isEmpty {
-            self.selectedDays = [
-                .monday,
-                .tuesday,
-                .wednesday,
-                .thursday,
-                .friday,
-                .saturday,
-                .sunday
-            ]
-        }
-        
         let newTracker = Tracker(
+            id: UUID(),
             name: name,
             color: selectedColor,
             emoji: selectedEmoji,
-            schedule: Array(self.selectedDays)
+            schedule: selectedDays.isEmpty ? nil : Array(selectedDays)
         )
         
-        // TODO: Удалить MockData
-        if MockData.shared.categories.contains(where: { $0.name == selectedCategory.name }) {
-            guard
-                let existedCategory = MockData.shared.categories
-                    .filter({ $0.name == selectedCategory.name })
-                    .first
-            else { return }
-            
-            var otherCategories = MockData.shared.categories
-                .filter { $0.name != selectedCategory.name }
-            
-            var trackers = existedCategory.trackers
-            trackers.append(newTracker)
-            
-            let updatedCategory = TrackerCategory(
-                name: existedCategory.name,
-                trackers: trackers
-            )
-            otherCategories.append(updatedCategory)
-            MockData.shared.categories = otherCategories
-        } else {
-            MockData.shared.categories.append(
-                TrackerCategory(
-                    name: selectedCategory.name,
-                    trackers: [newTracker]
-                )
-            )
-        }
-        
-        NotificationCenter.default.post(
-            name: NSNotification.Name(rawValue: "reload"),
-            object: nil
-        )
+        self.store.add(newTracker, to: selectedCategory)
         self.dismiss(animated: true)
     }
     
@@ -131,7 +84,7 @@ final class NewTrackerViewController: UIViewController {
         return stackView
     }()
     
-    private let settings: [SettingsCollectionViewSection] = [
+    private lazy var settings: [SettingsCollectionViewSection] = [
         .emoji([
             "🙂", "😻", "🌺", "🐶", "❤️", "😱",
             "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -147,6 +100,12 @@ final class NewTrackerViewController: UIViewController {
         ])
     ]
     
+    // MARK: - Data Source
+    
+    private lazy var store = TrackerStore()
+    
+    // MARK: - Properties
+    
     private var name: String? {
         didSet {
             checkRequiredSettings()
@@ -155,7 +114,7 @@ final class NewTrackerViewController: UIViewController {
     
     private var selectedDays: Set<WeekDay> = []
     
-    private var selectedCategory: TrackerCategory? {
+    private var selectedCategory: Category? {
         didSet {
             checkRequiredSettings()
         }
@@ -199,25 +158,57 @@ final class NewTrackerViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
         view.addSubview(scrollView)
-        scrollView.addSubview(trackerNameTextField)
-        scrollView.addSubview(settingsTableView)
-        scrollView.addSubview(settingsCollectionView)
+        scrollView.addSubview(textField)
+        scrollView.addSubview(tableView)
+        scrollView.addSubview(collectionView)
         scrollView.addSubview(buttonsStackView)
         createButton.isEnabled = false
     }
     
     private func setDelegates() {
-        settingsTableView.delegate = self
-        settingsTableView.dataSource = self
-        settingsCollectionView.delegate = self
-        settingsCollectionView.dataSource = self
-        trackerNameTextField.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        textField.delegate = self
     }
     
     private func checkRequiredSettings() {
         if name != nil && selectedCategory != nil && selectedEmoji != nil && selectedColor != nil {
             createButton.isEnabled = true
         }
+    }
+}
+
+// MARK: - CategoryDelegate
+
+extension NewTrackerViewController: CategoryDelegate {
+    func didSelectCategory(_ selectedCategory: Category) {
+        self.selectedCategory = selectedCategory
+        let categoryCell = tableView.visibleCells.filter({
+            $0.tag == SettingsTableViewSection.category.rawValue
+        }).first as? SettingsCell
+        categoryCell?.updateSelectedSettings(selectedCategory.name)
+    }
+}
+
+// MARK: - ScheduleDelegate
+
+extension NewTrackerViewController: ScheduleDelegate {
+    func didSelectDays(_ days: Set<WeekDay>) {
+        selectedDays = days
+        updateScheduleCell(days: Array(days))
+    }
+    
+    private func updateScheduleCell(days: [WeekDay]) {
+        let selectedDays = days
+            .sorted(by: { $0.rawValue < $1.rawValue })
+            .map { $0.shortTitle }
+            .joined(separator: ", ")
+        let scheduleCell = tableView.visibleCells.filter({
+            $0.tag == SettingsTableViewSection.schedule.rawValue
+        }).first as? SettingsCell
+        scheduleCell?.updateSelectedSettings(selectedDays)
     }
 }
 
@@ -385,38 +376,6 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - CategoryDelegate
-
-extension NewTrackerViewController: CategoryDelegate {
-    func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        self.selectedCategory = selectedCategory
-        let categoryCell = settingsTableView.visibleCells.filter({
-            $0.tag == SettingsTableViewSection.category.rawValue
-        }).first as? SettingsCell
-        categoryCell?.updateSelectedSettings(selectedCategory.name)
-    }
-}
-
-// MARK: - ScheduleDelegate
-
-extension NewTrackerViewController: ScheduleDelegate {
-    func didSelectDays(_ days: Set<WeekDay>) {
-        selectedDays = days
-        updateScheduleCell(days: Array(days))
-    }
-    
-    private func updateScheduleCell(days: [WeekDay]) {
-        let selectedDays = days
-            .sorted(by: { $0.rawValue < $1.rawValue })
-            .map { $0.shortTitle }
-            .joined(separator: ", ")
-        let scheduleCell = settingsTableView.visibleCells.filter({
-            $0.tag == SettingsTableViewSection.schedule.rawValue
-        }).first as? SettingsCell
-        scheduleCell?.updateSelectedSettings(selectedDays)
-    }
-}
-
 // MARK: - Setting Constraints
 
 extension NewTrackerViewController {
@@ -431,19 +390,19 @@ extension NewTrackerViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            trackerNameTextField.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            trackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            trackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            settingsTableView.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 24),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            settingsCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 24),
-            settingsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            settingsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            buttonsStackView.topAnchor.constraint(equalTo: settingsCollectionView.bottomAnchor, constant: 16),
+            buttonsStackView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
             buttonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonsStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16)
