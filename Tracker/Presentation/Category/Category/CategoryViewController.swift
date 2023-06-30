@@ -4,12 +4,9 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(with: "Категория")
+    private lazy var titleLabel = AppTitleLabel(title: "Категория")
     
-    private lazy var placeholderView = AppPlaceholderView(
-        with: UIImage.emptyList,
-        and: "Привычки и события можно объединить по смыслу"
-    )
+    private lazy var placeholderView = AppPlaceholderView(image: UIImage.emptyList, text: "Привычки и события можно объединить по смыслу")
     
     private lazy var tableView: AppTableView = {
         let tableView = AppTableView(frame: .zero)
@@ -30,10 +27,7 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private lazy var store: CategoryStore? = {
-        guard let dataStore = try? DataStoreImpl() else { return nil }
-        return CategoryStore(dataStore: dataStore, delegate: self)
-    }()
+    private lazy var store: CategoryStore = CategoryStore(delegate: self)
     
     private var selectedCategory: Category?
     
@@ -41,7 +35,7 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(with selectedCategory: Category?) {
+    init(selectedCategory: Category?) {
         self.selectedCategory = selectedCategory
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,7 +68,6 @@ final class CategoryViewController: UIViewController {
     }
     
     private func isEmptyCategories() {
-        guard let store else { return }
         store.isEmpty ? showPlaceholder() : showCollectionView()
     }
     
@@ -93,7 +86,7 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: NewCategoryDelegate {
     func didCreateNewCategory(_ category: Category) {
-        store?.add(category)
+        store.add(category)
         isEmptyCategories()
     }
 }
@@ -115,12 +108,12 @@ extension CategoryViewController: StoreDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        store?.numberOfRowsInSection(section) ?? 0
+        store.numberOfRowsInSection(section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
-        guard let category = store?.object(at: indexPath) else { return cell }
+        guard let category = store.object(at: indexPath) else { return cell }
         cell.prepareForReuse()
         cell.textLabel?.text = category.name
         cell.backgroundColor = .appBackground
@@ -142,7 +135,7 @@ extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard
             let cell = tableView.cellForRow(at: indexPath),
-            let category = store?.object(at: indexPath)
+            let category = store.object(at: indexPath)
         else { return }
         tableView.visibleCells.forEach {
             $0.setSelected(false, animated: true)
