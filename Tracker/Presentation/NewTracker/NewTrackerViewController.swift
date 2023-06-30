@@ -263,11 +263,11 @@ extension NewTrackerViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
         switch cell.tag {
         case 0:
-            let categoryViewController = CategoryViewController(with: selectedCategory)
+            let categoryViewController = CategoryViewController(selectedCategory: selectedCategory)
             categoryViewController.delegate = self
             present(categoryViewController, animated: true)
         case 1:
-            let scheduleViewController = ScheduleViewController(with: selectedDays)
+            let scheduleViewController = ScheduleViewController(selectedDays: selectedDays)
             scheduleViewController.delegate = self
             present(scheduleViewController, animated: true)
         default: break
