@@ -4,21 +4,23 @@ final class NewCategoryViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(with: "Новая категория")
+    private lazy var titleLabel = AppTitleLabel(title: "Новая категория")
     
-    private lazy var newCategoryNameTextField = AppTextField(with: "Введите название категории")
+    private lazy var textField = AppTextField(placeholder: "Введите название категории")
     
     private lazy var finishedButton = AppButton(title: "Готово") { [weak self] in
         guard
             let self,
-            let text = self.newCategoryNameTextField.text,
+            let text = self.textField.text,
             text != ""
         else { return }
+        
         let newCategory = Category(
             id: UUID(),
             name: text,
             trackers: []
         )
+        
         self.delegate?.didCreateNewCategory(newCategory)
         self.dismiss(animated: true)
     }
@@ -48,13 +50,13 @@ final class NewCategoryViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
-        view.addSubview(newCategoryNameTextField)
+        view.addSubview(textField)
         view.addSubview(finishedButton)
         finishedButton.isEnabled = false
     }
     
     private func setDelegates() {
-        newCategoryNameTextField.delegate = self
+        textField.delegate = self
     }
 }
 
@@ -77,9 +79,9 @@ extension NewCategoryViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            newCategoryNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            newCategoryNameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            newCategoryNameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             finishedButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             finishedButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
