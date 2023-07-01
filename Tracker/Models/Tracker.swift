@@ -5,5 +5,5 @@ struct Tracker: Equatable {
     let name: String
     let color: UIColor
     let emoji: String
-    let schedule: [WeekDay]?
+    let schedule: [WeekDay]
 }
