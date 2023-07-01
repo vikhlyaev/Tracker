@@ -2,11 +2,13 @@ import Foundation
 import CoreData
 
 extension NSPersistentContainer {
-    static func create(for model: String) throws -> NSPersistentContainer {
+    static func create(for model: String) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "TrackerDataModel")
-        var loadError: Error?
-        container.loadPersistentStores { loadError = $1 }
-        try loadError.map { throw $0 }
+        container.loadPersistentStores {
+            if let error = $1 {
+                assertionFailure("Error loading the persistent container: \(error)")
+            }
+        }
         return container
     }
 }
