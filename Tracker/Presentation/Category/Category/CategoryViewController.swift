@@ -27,7 +27,7 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private lazy var store: CategoryStore = CategoryStore(delegate: self)
+    private lazy var categoryStore: CategoryStore = CategoryStore(delegate: self)
     
     private var selectedCategory: Category?
     
@@ -68,7 +68,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func isEmptyCategories() {
-        store.isEmpty ? showPlaceholder() : showCollectionView()
+        categoryStore.isEmpty ? showPlaceholder() : showCollectionView()
     }
     
     private func showPlaceholder() {
@@ -86,7 +86,7 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: NewCategoryDelegate {
     func didCreateNewCategory(_ category: Category) {
-        store.add(category)
+        categoryStore.add(category)
         isEmptyCategories()
     }
 }
@@ -108,12 +108,12 @@ extension CategoryViewController: StoreDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        store.numberOfRowsInSection(section)
+        categoryStore.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
-        guard let category = store.object(at: indexPath) else { return cell }
+        guard let category = categoryStore.object(at: indexPath.row) else { return cell }
         cell.prepareForReuse()
         cell.textLabel?.text = category.name
         cell.backgroundColor = .appBackground
@@ -135,7 +135,7 @@ extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard
             let cell = tableView.cellForRow(at: indexPath),
-            let category = store.object(at: indexPath)
+            let category = categoryStore.object(at: indexPath.row)
         else { return }
         tableView.visibleCells.forEach {
             $0.setSelected(false, animated: true)
