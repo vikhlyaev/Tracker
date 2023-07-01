@@ -63,7 +63,7 @@ final class NewTrackerViewController: UIViewController {
             name: name,
             color: selectedColor,
             emoji: selectedEmoji,
-            schedule: selectedDays.isEmpty ? nil : Array(selectedDays)
+            schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
         )
         
         self.store.add(newTracker, to: selectedCategory)
