@@ -65,7 +65,7 @@ final class NewTrackerViewController: UIViewController {
             emoji: selectedEmoji,
             schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
         )
-        
+
         self.store.add(newTracker, to: selectedCategory)
         self.dismiss(animated: true)
     }
