@@ -27,7 +27,7 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private lazy var categoryStore: CategoryStoreImpl = CategoryStoreImpl(delegate: self)
+    private lazy var categoryStore = CategoryStore(delegate: self)
     
     private var selectedCategory: Category?
     
@@ -96,9 +96,12 @@ extension CategoryViewController: NewCategoryDelegate {
 extension CategoryViewController: StoreDelegate {
     func didUpdate(_ update: StoreUpdate) {
         tableView.performBatchUpdates {
-            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
+            guard let insertedIndexes = update.insertedIndexes else { return }
+            let insertedIndexPaths = insertedIndexes.map { IndexPath(item: $0, section: 0) }
             tableView.insertRows(at: insertedIndexPaths, with: .automatic)
+            
+            guard let deletedIndexes = update.deletedIndexes else { return }
+            let deletedIndexPaths = deletedIndexes.map { IndexPath(item: $0, section: 0) }
             tableView.deleteRows(at: deletedIndexPaths, with: .fade)
         }
     }
@@ -108,12 +111,12 @@ extension CategoryViewController: StoreDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categoryStore.numberOfSections
+        categoryStore.numberOfRowsInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
-        guard let category = categoryStore.object(at: indexPath.row) else { return cell }
+        guard let category = categoryStore.object(at: indexPath) else { return cell }
         cell.prepareForReuse()
         cell.textLabel?.text = category.name
         cell.backgroundColor = .appBackground
@@ -135,7 +138,7 @@ extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard
             let cell = tableView.cellForRow(at: indexPath),
-            let category = categoryStore.object(at: indexPath.row)
+            let category = categoryStore.object(at: indexPath)
         else { return }
         tableView.visibleCells.forEach {
             $0.setSelected(false, animated: true)
