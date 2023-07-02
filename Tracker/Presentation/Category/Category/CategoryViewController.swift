@@ -27,7 +27,7 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private lazy var categoryStore: CategoryStore = CategoryStore(delegate: self)
+    private lazy var categoryStore: CategoryStoreImpl = CategoryStoreImpl(delegate: self)
     
     private var selectedCategory: Category?
     
