@@ -38,10 +38,9 @@ final class TrackersViewController: UIViewController {
     // MARK: - Data Source
     
     private lazy var trackerStore = TrackerStore(delegate: self)
-    
+    private lazy var recordStore = RecordStore()
     private var weekDay: Int?
-    
-    private var completedTrackers: Set<Record> = []
+    private var currentDate: Date?
     
     // MARK: - Life Cycle
     
@@ -123,6 +122,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func dateChanged() {
         weekDay = Calendar.current.component(.weekday, from: datePicker.date)
+        currentDate = Calendar.current.startOfDay(for: datePicker.date)
         guard let weekDay else { return }
         trackerStore.filter(by: weekDay)
         isEmptyCategories()
@@ -143,19 +143,20 @@ extension TrackersViewController: StoreDelegate {
 
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
-        if datePicker.date < Date() {
-            let trackerRecord = Record(taskId: id, executionDate: datePicker.date)
-            completedTrackers.insert(trackerRecord)
+        guard let currentDate else { return }
+        if currentDate < Date() {
+            let record = Record(trackerId: id, executionDate: currentDate)
+            recordStore.add(record, to: id)
             collectionView.reloadItems(at: [indexPath])
         }
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        guard let trackerRecord = completedTrackers.filter({
-            let isSameDay = Calendar.current.isDate($0.executionDate, inSameDayAs: datePicker.date)
-            return $0.taskId == id && isSameDay
-        }).first else { return }
-        completedTrackers.remove(trackerRecord)
+        guard
+            let currentDate,
+            let record = recordStore.fetchRecord(by: id, and: currentDate)
+        else { return }
+        recordStore.delete(record)
         collectionView.reloadItems(at: [indexPath])
     }
 }
@@ -192,6 +193,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
+            let currentDate,
             let currentTracker = trackerStore.object(at: indexPath),
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrackerCell.reuseIdentifier,
@@ -200,8 +202,10 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
-        let isCompletedToday = isTrackerCompletedToday(id: currentTracker.id)
-        let completedDays = completedTrackers.filter { $0.taskId == currentTracker.id }.count
+        
+        let isCompletedToday = recordStore.isTrackerCompletedToday(by: currentTracker.id, and: currentDate)
+        let completedDays = recordStore.completedTrackers(by: currentTracker.id)
+        
         cell.delegate = self
         cell.configure(
             with: currentTracker,
@@ -225,13 +229,6 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         view.configure(with: header)
         return view
-    }
-    
-    private func isTrackerCompletedToday(id: UUID) -> Bool {
-        completedTrackers.contains {
-            let isSameDay = Calendar.current.isDate($0.executionDate, inSameDayAs: datePicker.date)
-            return $0.taskId == id && isSameDay
-        }
     }
 }
 
