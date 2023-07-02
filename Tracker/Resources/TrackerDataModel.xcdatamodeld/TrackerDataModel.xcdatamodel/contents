@@ -8,8 +8,7 @@
     </entity>
     <entity name="RecordManagedObject" representedClassName="RecordManagedObject" syncable="YES" codeGenerationType="class">
         <attribute name="executionDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="taskId" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="tracker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerManagedObject" inverseName="records" inverseEntity="TrackerManagedObject"/>
+        <attribute name="trackerId" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="TrackerManagedObject" representedClassName="TrackerManagedObject" syncable="YES" codeGenerationType="class">
         <attribute name="emoji" attributeType="String"/>
@@ -17,7 +16,6 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryManagedObject" inverseName="trackers" inverseEntity="CategoryManagedObject"/>
-        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RecordManagedObject" inverseName="tracker" inverseEntity="RecordManagedObject"/>
         <relationship name="schedule" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeekDayManagedObject" inverseName="tracker" inverseEntity="WeekDayManagedObject"/>
     </entity>
     <entity name="WeekDayManagedObject" representedClassName="WeekDayManagedObject" syncable="YES" codeGenerationType="class">
