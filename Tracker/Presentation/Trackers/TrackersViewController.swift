@@ -39,6 +39,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var trackerStore = TrackerStore(delegate: self)
     private lazy var recordStore = RecordStore()
+    
     private var weekDay: Int?
     private var currentDate: Date?
     

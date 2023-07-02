@@ -2,11 +2,16 @@ import Foundation
 import CoreData
 
 final class TrackerStore: NSObject {
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
     private let dataStore: DataStore
     private let context: NSManagedObjectContext
+    
+    // ???
+    private var insertedIndexes: IndexSet?
+    private var deletedIndexes: IndexSet?
+    
     private weak var delegate: StoreDelegate?
+    
+    // MARK: - FRC
     
     private lazy var fetchedResultController: NSFetchedResultsController<TrackerManagedObject> = {
         let request = TrackerManagedObject.fetchRequest()
@@ -22,6 +27,8 @@ final class TrackerStore: NSObject {
         return fetchedResultController
     }()
     
+    // MARK: - Init
+    
     init(dataStore: DataStore, delegate: StoreDelegate?) {
         self.dataStore = dataStore
         self.context = dataStore.managedObjectContext
@@ -32,6 +39,8 @@ final class TrackerStore: NSObject {
     convenience init(delegate: StoreDelegate? = nil) {
         self.init(dataStore: DataStore.shared, delegate: delegate)
     }
+    
+    // MARK: - Convert
     
     private func convert(weekDay: WeekDay) -> WeekDayManagedObject {
         let weekDayManagedObject = WeekDayManagedObject(context: context)

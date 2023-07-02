@@ -6,6 +6,8 @@ final class RecordStore: NSObject {
     private let dataStore: DataStore
     private let context: NSManagedObjectContext
     
+    // MARK: - Init
+    
     init(dataStore: DataStore) {
         self.dataStore = dataStore
         self.context = dataStore.managedObjectContext
@@ -15,6 +17,8 @@ final class RecordStore: NSObject {
     override convenience init() {
         self.init(dataStore: DataStore.shared)
     }
+    
+    // MARK: - Convert
     
     private func convert(record: Record) -> RecordManagedObject {
         let recordManagedObject = RecordManagedObject(context: context)
@@ -33,7 +37,9 @@ final class RecordStore: NSObject {
             executionDate: executionDate
         )
     }
-    
+}
+
+extension RecordStore {
     func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool {
         fetchRecord(by: trackerId, and: currentDate) != nil
     }
