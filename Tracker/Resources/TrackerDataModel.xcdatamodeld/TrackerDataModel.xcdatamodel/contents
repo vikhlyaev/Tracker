@@ -4,7 +4,7 @@
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="trackers" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TrackerManagedObject" inverseName="category" inverseEntity="TrackerManagedObject"/>
+        <relationship name="trackers" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TrackerManagedObject" inverseName="category" inverseEntity="TrackerManagedObject"/>
     </entity>
     <entity name="RecordManagedObject" representedClassName="RecordManagedObject" syncable="YES" codeGenerationType="class">
         <attribute name="executionDate" attributeType="Date" usesScalarValueType="NO"/>
@@ -17,7 +17,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="schedule" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
-        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryManagedObject" inverseName="trackers" inverseEntity="CategoryManagedObject"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryManagedObject" inverseName="trackers" inverseEntity="CategoryManagedObject"/>
         <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RecordManagedObject" inverseName="tracker" inverseEntity="RecordManagedObject"/>
     </entity>
 </model>
