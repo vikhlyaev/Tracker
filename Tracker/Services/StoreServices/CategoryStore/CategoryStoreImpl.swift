@@ -130,8 +130,15 @@ extension CategoryStoreImpl: CategoryStore {
         }
     }
     
-    func filter(by date: Date, and searchText: String? = nil) {
-        fetchedResultController.fetchRequest.predicate = NSPredicate()
+    func filter(by weekDayNumber: Int, and searchText: String?) {
+        guard let searchText else { return }
+        if searchText != "" {
+            let sectionPredicate = NSPredicate(format: "%K CONTAINS[c] %@", "name", searchText)
+            fetchedResultController.fetchRequest.predicate = sectionPredicate
+        } else {
+            fetchedResultController.fetchRequest.predicate = nil
+        }
+        try? fetchedResultController.performFetch()
     }
 }
 

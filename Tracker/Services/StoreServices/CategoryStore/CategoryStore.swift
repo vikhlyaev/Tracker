@@ -7,4 +7,5 @@ protocol CategoryStore {
     func add(_ category: Category)
     func object(at index: Int) -> Category?
     func tracker(at indexPath: IndexPath) -> Tracker?
+    func filter(by weekDayNumber: Int, and searchText: String?)
 }
