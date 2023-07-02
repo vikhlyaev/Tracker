@@ -2,12 +2,17 @@ import Foundation
 import UIKit
 import CoreData
 
-final class CategoryStoreImpl: NSObject {
+final class CategoryStore: NSObject {
     private let dataStore: DataStore
     private let context: NSManagedObjectContext
+    
+    // ???
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
+    
     private weak var delegate: StoreDelegate?
+    
+    // MARK: - FRC
     
     private lazy var fetchedResultController: NSFetchedResultsController<CategoryManagedObject> = {
         let request = CategoryManagedObject.fetchRequest()
@@ -35,29 +40,15 @@ final class CategoryStoreImpl: NSObject {
         self.init(dataStore: DataStore.shared, delegate: delegate)
     }
     
+    // MARK: - Convert
+    
     private func convert(managedObject: CategoryManagedObject) -> Category? {
         guard
             let id = managedObject.id,
             let name = managedObject.name,
             let trackerManagedObjects = managedObject.trackers?.array as? [TrackerManagedObject]
         else { return nil }
-        let trackers: [Tracker] = trackerManagedObjects
-            .compactMap({ trackerManagedObject in
-                guard
-                    let id = trackerManagedObject.id,
-                    let name = trackerManagedObject.name,
-                    let colorHex = trackerManagedObject.hexColor,
-                    let emoji = trackerManagedObject.emoji,
-                    let schedule = trackerManagedObject.schedule?.compactMap({ WeekDay(rawValue: $0) })
-                else { return nil }
-                return Tracker(
-                    id: id,
-                    name: name,
-                    color: ColorMarshall.shared.decode(hexColor: colorHex),
-                    emoji: emoji,
-                    schedule: schedule
-                )
-            })
+        let trackers: [Tracker] = trackerManagedObjects.compactMap({ convert(managedObject: $0) })
         return Category(
             id: id,
             name: name,
@@ -71,50 +62,33 @@ final class CategoryStoreImpl: NSObject {
             let name = managedObject.name,
             let emoji = managedObject.emoji,
             let hexColor = managedObject.hexColor,
-            let schedule = managedObject.schedule?.compactMap({ WeekDay(rawValue: $0) })
+            let scheduleManagedObjects = managedObject.schedule?.array as? [WeekDayManagedObject]
         else { return nil }
         return Tracker(
             id: id,
             name: name,
             color: ColorMarshall.shared.decode(hexColor: hexColor),
             emoji: emoji,
-            schedule: schedule
+            schedule: scheduleManagedObjects.compactMap({ weekDayManagedObject in
+                let index = Int(weekDayManagedObject.index)
+                return WeekDay(rawValue: index)
+            })
         )
     }
 }
 
-// MARK: - StoreProtocol
-
-extension CategoryStoreImpl: CategoryStore {
+extension CategoryStore {
     var isEmpty: Bool {
-        guard let count = fetchedResultController.fetchedObjects?.count else { return true }
-        return count == 0
+        fetchedResultController.fetchedObjects?.isEmpty ?? true
     }
     
-    var numberOfSections: Int {
+    var numberOfRowsInSection: Int {
         fetchedResultController.fetchedObjects?.count ?? 0
     }
     
-    func numberOfRowsInSection(_ section: Int) -> Int {
-        guard
-            let categoryManagedObjects = fetchedResultController.fetchedObjects,
-            let trackers = categoryManagedObjects[section].trackers?.array as? [TrackerManagedObject]
-        else { return 0 }
-        return trackers.count
-    }
-    
-    func object(at index: Int) -> Category? {
-        guard
-            let categoryManagedObject = fetchedResultController.fetchedObjects?[index] as? CategoryManagedObject
-        else { return nil }
+    func object(at indexPath: IndexPath) -> Category? {
+        let categoryManagedObject = fetchedResultController.object(at: indexPath)
         return convert(managedObject: categoryManagedObject)
-    }
-    
-    func tracker(at indexPath: IndexPath) -> Tracker? {
-        guard
-            let trackerManagedObject = fetchedResultController.fetchedObjects?[indexPath.section].trackers?.array[indexPath.item] as? TrackerManagedObject
-        else { return nil }
-        return convert(managedObject: trackerManagedObject)
     }
     
     func add(_ category: Category) {
@@ -129,27 +103,16 @@ extension CategoryStoreImpl: CategoryStore {
             }
         }
     }
-    
-    func filter(by weekDayNumber: Int, and searchText: String?) {
-        guard let searchText else { return }
-        if searchText != "" {
-            let sectionPredicate = NSPredicate(format: "%K CONTAINS[c] %@", "name", searchText)
-            fetchedResultController.fetchRequest.predicate = sectionPredicate
-        } else {
-            fetchedResultController.fetchRequest.predicate = nil
-        }
-        try? fetchedResultController.performFetch()
-    }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension CategoryStoreImpl: NSFetchedResultsControllerDelegate {
+extension CategoryStore: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         insertedIndexes = IndexSet()
         deletedIndexes = IndexSet()
     }
-
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         delegate?.didUpdate(
             StoreUpdate(
@@ -158,15 +121,10 @@ extension CategoryStoreImpl: NSFetchedResultsControllerDelegate {
             )
         )
         insertedIndexes = nil
-        deletedIndexes = nil
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .delete:
-            if let indexPath = indexPath {
-                deletedIndexes?.insert(indexPath.item)
-            }
         case .insert:
             if let indexPath = newIndexPath {
                 insertedIndexes?.insert(indexPath.item)
