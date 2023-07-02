@@ -16,8 +16,12 @@
         <attribute name="hexColor" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="schedule" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryManagedObject" inverseName="trackers" inverseEntity="CategoryManagedObject"/>
         <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RecordManagedObject" inverseName="tracker" inverseEntity="RecordManagedObject"/>
+        <relationship name="schedule" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeekDayManagedObject" inverseName="tracker" inverseEntity="WeekDayManagedObject"/>
+    </entity>
+    <entity name="WeekDayManagedObject" representedClassName="WeekDayManagedObject" syncable="YES" codeGenerationType="class">
+        <attribute name="index" attributeType="Integer 16" minValueString="0" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="tracker" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerManagedObject" inverseName="schedule" inverseEntity="TrackerManagedObject"/>
     </entity>
 </model>
