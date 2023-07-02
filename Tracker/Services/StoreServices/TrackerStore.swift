@@ -35,7 +35,6 @@ final class TrackerStore: NSObject {
                     let categoryManagedObject = try? context.fetch(request).first
                 else { return }
                 let trackerManagedObject = convert(tracker: tracker)
-                trackerManagedObject.category = categoryManagedObject
                 categoryManagedObject.addToTrackers(trackerManagedObject)
                 try context.save()
             }
