@@ -1,6 +1,6 @@
 import Foundation
 
 struct Record: Hashable {
-    let taskId: UUID
+    let trackerId: UUID
     let executionDate: Date
 }
