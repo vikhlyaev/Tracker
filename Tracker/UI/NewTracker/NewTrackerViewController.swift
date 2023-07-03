@@ -66,8 +66,7 @@ final class NewTrackerViewController: UIViewController {
             schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
         )
 
-        self.store.add(newTracker, to: selectedCategory)
-        self.dismiss(animated: true)
+        delegate?.didCreateNewTracker(newTracker, to: selectedCategory)
     }
     
     private lazy var cancelButton = AppButton(title: "Отменить", style: .cancel) { [weak self] in
@@ -100,11 +99,9 @@ final class NewTrackerViewController: UIViewController {
         ])
     ]
     
-    // MARK: - Data Source
-    
-    private lazy var store = TrackerStore()
-    
     // MARK: - Properties
+    
+    weak var delegate: NewTrackerDelegate?
     
     private var name: String? {
         didSet {

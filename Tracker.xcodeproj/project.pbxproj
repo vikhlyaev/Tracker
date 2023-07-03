@@ -33,7 +33,7 @@
 		0A9843A12A3C33C80080DAA3 /* WeekdayCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9843A02A3C33C80080DAA3 /* WeekdayCellDelegate.swift */; };
 		0A9843A32A3C3D5C0080DAA3 /* ScheduleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9843A22A3C3D5C0080DAA3 /* ScheduleDelegate.swift */; };
 		0AAD20EB2A461F4B00123E4C /* ColorMarshall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAD20EA2A461F4B00123E4C /* ColorMarshall.swift */; };
-		0AAD20EE2A46E75000123E4C /* DataStoreImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAD20ED2A46E75000123E4C /* DataStoreImpl.swift */; };
+		0AAD20EE2A46E75000123E4C /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAD20ED2A46E75000123E4C /* DataStore.swift */; };
 		0AAD20F02A46E83D00123E4C /* NSPersistentContainer + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAD20EF2A46E83D00123E4C /* NSPersistentContainer + Extensions.swift */; };
 		0AAD20F82A4703DE00123E4C /* CategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAD20F72A4703DE00123E4C /* CategoryStore.swift */; };
 		0AB8A5732A14FC9A005E239F /* AppTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5722A14FC9A005E239F /* AppTabBarController.swift */; };
@@ -91,7 +91,7 @@
 		0A9843A02A3C33C80080DAA3 /* WeekdayCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCellDelegate.swift; sourceTree = "<group>"; };
 		0A9843A22A3C3D5C0080DAA3 /* ScheduleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDelegate.swift; sourceTree = "<group>"; };
 		0AAD20EA2A461F4B00123E4C /* ColorMarshall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMarshall.swift; sourceTree = "<group>"; };
-		0AAD20ED2A46E75000123E4C /* DataStoreImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreImpl.swift; sourceTree = "<group>"; };
+		0AAD20ED2A46E75000123E4C /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0AAD20EF2A46E83D00123E4C /* NSPersistentContainer + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentContainer + Extensions.swift"; sourceTree = "<group>"; };
 		0AAD20F72A4703DE00123E4C /* CategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStore.swift; sourceTree = "<group>"; };
 		0AB8A5722A14FC9A005E239F /* AppTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabBarController.swift; sourceTree = "<group>"; };
@@ -148,11 +148,10 @@
 		0A2377DA2A0CB18800B8B2AD /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				0A2378112A0CB39400B8B2AD /* Application */,
+				0A2378112A0CB39400B8B2AD /* App */,
 				0AD79E7B2A1A266600DBE2EC /* Models */,
-				0A2378122A0CB3B100B8B2AD /* Presentation */,
+				0A2378122A0CB3B100B8B2AD /* UI */,
 				0AFCE8862A3DDB8F00C2D472 /* Services */,
-				0AAD20D72A45DEFB00123E4C /* Core */,
 				0A2378132A0CB5CB00B8B2AD /* Extensions */,
 				0A2378102A0CB38A00B8B2AD /* Resources */,
 				0A23780F2A0CB37F00B8B2AD /* Supporting Files */,
@@ -178,15 +177,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		0A2378112A0CB39400B8B2AD /* Application */ = {
+		0A2378112A0CB39400B8B2AD /* App */ = {
 			isa = PBXGroup;
 			children = (
 				0A2377DB2A0CB18800B8B2AD /* AppDelegate.swift */,
 			);
-			path = Application;
+			path = App;
 			sourceTree = "<group>";
 		};
-		0A2378122A0CB3B100B8B2AD /* Presentation */ = {
+		0A2378122A0CB3B100B8B2AD /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				0AB8A57A2A151A54005E239F /* Common */,
@@ -197,7 +196,7 @@
 				0AB8A57D2A155FB7005E239F /* CreatingTracker */,
 				0AB8A5742A14FD6B005E239F /* Trackers */,
 			);
-			path = Presentation;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		0A2378132A0CB5CB00B8B2AD /* Extensions */ = {
@@ -290,17 +289,10 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		0AAD20D72A45DEFB00123E4C /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				0AAD20ED2A46E75000123E4C /* DataStoreImpl.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		0AAD20E32A46146300123E4C /* StoreServices */ = {
 			isa = PBXGroup;
 			children = (
+				0AAD20ED2A46E75000123E4C /* DataStore.swift */,
 				0ABE70E12A4998B2001CC002 /* StoreDelegate.swift */,
 				0AAD20F72A4703DE00123E4C /* CategoryStore.swift */,
 				0ABE70EC2A4B5A8B001CC002 /* TrackerStore.swift */,
@@ -487,7 +479,7 @@
 				0AEE08C32A3F065800728C0D /* NewTrackerDelegate.swift in Sources */,
 				0A7291F42A430D010045EEA1 /* NewTrackerViewController.swift in Sources */,
 				0AB8A5732A14FC9A005E239F /* AppTabBarController.swift in Sources */,
-				0AAD20EE2A46E75000123E4C /* DataStoreImpl.swift in Sources */,
+				0AAD20EE2A46E75000123E4C /* DataStore.swift in Sources */,
 				0AAD20F82A4703DE00123E4C /* CategoryStore.swift in Sources */,
 				0AC3652A2A2F7CBB00FE6283 /* Tracker.swift in Sources */,
 				0A7291F62A431BFC0045EEA1 /* SettingsTableViewSection.swift in Sources */,
