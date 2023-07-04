@@ -4,11 +4,6 @@ import CoreData
 final class TrackerStore: NSObject {
     private let dataStore: DataStore
     private let context: NSManagedObjectContext
-    
-    // ???
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
-    
     private weak var delegate: StoreDelegate?
     
     // MARK: - FRC
@@ -42,33 +37,13 @@ final class TrackerStore: NSObject {
     
     // MARK: - Convert
     
-    private func convert(weekDay: WeekDay) -> WeekDayManagedObject {
-        let weekDayManagedObject = WeekDayManagedObject(context: context)
-        weekDayManagedObject.index = Int16(weekDay.numberValue)
-        return weekDayManagedObject
-    }
-    
-    private func convert(managedObject: WeekDayManagedObject) -> WeekDay? {
-        let index = Int(managedObject.index)
-        switch index {
-        case 1: return WeekDay.sunday
-        case 2: return WeekDay.monday
-        case 3: return WeekDay.tuesday
-        case 4: return WeekDay.wednesday
-        case 5: return WeekDay.thursday
-        case 6: return WeekDay.friday
-        case 7: return WeekDay.saturday
-        default: return nil
-        }
-    }
-    
     private func convert(tracker: Tracker) -> TrackerManagedObject {
         let trackerManagedObject = TrackerManagedObject(context: context)
         trackerManagedObject.id = tracker.id
         trackerManagedObject.name = tracker.name
         trackerManagedObject.emoji = tracker.emoji
         trackerManagedObject.hexColor = ColorMarshall.shared.encode(color: tracker.color)
-        tracker.schedule.forEach { trackerManagedObject.addToSchedule(convert(weekDay: $0)) }
+        trackerManagedObject.schedule = WeekDayMarshall.shared.encode(weekDays: tracker.schedule)
         return trackerManagedObject
     }
     
@@ -78,14 +53,14 @@ final class TrackerStore: NSObject {
             let name = managedObject.name,
             let emoji = managedObject.emoji,
             let hexColor = managedObject.hexColor,
-            let scheduleManagedObjects = managedObject.schedule?.array as? [WeekDayManagedObject]
+            let scheduleString = managedObject.schedule
         else { return nil }
         return Tracker(
             id: id,
             name: name,
             color: ColorMarshall.shared.decode(hexColor: hexColor),
             emoji: emoji,
-            schedule: scheduleManagedObjects.compactMap { convert(managedObject: $0) }
+            schedule: WeekDayMarshall.shared.decode(weekDays: scheduleString)
         )
     }
 }
@@ -127,44 +102,28 @@ extension TrackerStore {
         fetchedResultController.sections?[indexPath.section].name
     }
     
-    func filter(by weekDayNumber: Int, and searchText: String? = nil) {
-        let weekDayPredicate = NSPredicate(format: "ANY schedule == %i", weekDayNumber - 1)
-        fetchedResultController.fetchRequest.predicate = weekDayPredicate
-        guard let searchText else {
-            try? fetchedResultController.performFetch()
-            return
+    func filter(by date: Date, and searchText: String) {
+        var predicates: [NSPredicate] = []
+        let weekDay = Calendar.current.component(.weekday, from: date)
+        let weekDayIndex = String(weekDay > 1 ? weekDay - 2 : weekDay + 5)
+        predicates.append(
+            NSPredicate(format: "%K CONTAINS[cd] %@", "schedule", weekDayIndex)
+        )
+        if !searchText.isEmpty {
+            predicates.append(
+                NSPredicate(format: "%K CONTAINS[cd] %@", "name", searchText)
+            )
         }
-        let namePredicate = NSPredicate(format: "%K CONTAINS[c] %@", "name", searchText)
-        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [namePredicate, weekDayPredicate])
-        fetchedResultController.fetchRequest.predicate = compoundPredicate
+        fetchedResultController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         try? fetchedResultController.performFetch()
+        delegate?.didUpdate()
     }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension TrackerStore: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        insertedIndexes = IndexSet()
-    }
-
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didUpdate(
-            StoreUpdate(
-                insertedIndexes: insertedIndexes,
-                deletedIndexes: nil
-            )
-        )
-    }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath {
-                insertedIndexes?.insert(indexPath.item)
-            }
-        default:
-            break
-        }
+        delegate?.didUpdate()
     }
 }

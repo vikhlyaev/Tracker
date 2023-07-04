@@ -62,17 +62,14 @@ final class CategoryStore: NSObject {
             let name = managedObject.name,
             let emoji = managedObject.emoji,
             let hexColor = managedObject.hexColor,
-            let scheduleManagedObjects = managedObject.schedule?.array as? [WeekDayManagedObject]
+            let scheduleString = managedObject.schedule
         else { return nil }
         return Tracker(
             id: id,
             name: name,
             color: ColorMarshall.shared.decode(hexColor: hexColor),
             emoji: emoji,
-            schedule: scheduleManagedObjects.compactMap({ weekDayManagedObject in
-                let index = Int(weekDayManagedObject.index)
-                return WeekDay(rawValue: index)
-            })
+            schedule: WeekDayMarshall.shared.decode(weekDays: scheduleString)
         )
     }
 }
@@ -108,29 +105,7 @@ extension CategoryStore {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension CategoryStore: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        insertedIndexes = IndexSet()
-        deletedIndexes = IndexSet()
-    }
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didUpdate(
-            StoreUpdate(
-                insertedIndexes: insertedIndexes!,
-                deletedIndexes: deletedIndexes!
-            )
-        )
-        insertedIndexes = nil
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath {
-                insertedIndexes?.insert(indexPath.item)
-            }
-        default:
-            break
-        }
+        delegate?.didUpdate()
     }
 }
