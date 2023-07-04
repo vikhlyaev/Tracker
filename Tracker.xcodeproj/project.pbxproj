@@ -29,6 +29,8 @@
 		0A7291F62A431BFC0045EEA1 /* SettingsTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291F52A431BFC0045EEA1 /* SettingsTableViewSection.swift */; };
 		0A7291F82A431C170045EEA1 /* SettingsCollectionViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291F72A431C170045EEA1 /* SettingsCollectionViewSection.swift */; };
 		0A7291FB2A44B8760045EEA1 /* AppTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291FA2A44B8760045EEA1 /* AppTableView.swift */; };
+		0A97E1682A530633006A576E /* CreatingTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A97E1672A530633006A576E /* CreatingTrackerDelegate.swift */; };
+		0A97E16C2A53DC5E006A576E /* WeekDayMarshall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A97E16B2A53DC5E006A576E /* WeekDayMarshall.swift */; };
 		0A98439B2A3B41870080DAA3 /* TrackerCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A98439A2A3B41870080DAA3 /* TrackerCellDelegate.swift */; };
 		0A9843A12A3C33C80080DAA3 /* WeekdayCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9843A02A3C33C80080DAA3 /* WeekdayCellDelegate.swift */; };
 		0A9843A32A3C3D5C0080DAA3 /* ScheduleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9843A22A3C3D5C0080DAA3 /* ScheduleDelegate.swift */; };
@@ -87,6 +89,8 @@
 		0A7291F52A431BFC0045EEA1 /* SettingsTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewSection.swift; sourceTree = "<group>"; };
 		0A7291F72A431C170045EEA1 /* SettingsCollectionViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewSection.swift; sourceTree = "<group>"; };
 		0A7291FA2A44B8760045EEA1 /* AppTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTableView.swift; sourceTree = "<group>"; };
+		0A97E1672A530633006A576E /* CreatingTrackerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingTrackerDelegate.swift; sourceTree = "<group>"; };
+		0A97E16B2A53DC5E006A576E /* WeekDayMarshall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayMarshall.swift; sourceTree = "<group>"; };
 		0A98439A2A3B41870080DAA3 /* TrackerCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCellDelegate.swift; sourceTree = "<group>"; };
 		0A9843A02A3C33C80080DAA3 /* WeekdayCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCellDelegate.swift; sourceTree = "<group>"; };
 		0A9843A22A3C3D5C0080DAA3 /* ScheduleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDelegate.swift; sourceTree = "<group>"; };
@@ -345,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				0AB8A57B2A155FB1005E239F /* CreatingTrackerViewController.swift */,
+				0A97E1672A530633006A576E /* CreatingTrackerDelegate.swift */,
 			);
 			path = CreatingTracker;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 			isa = PBXGroup;
 			children = (
 				0AAD20EA2A461F4B00123E4C /* ColorMarshall.swift */,
+				0A97E16B2A53DC5E006A576E /* WeekDayMarshall.swift */,
 				0AAD20E32A46146300123E4C /* StoreServices */,
 			);
 			path = Services;
@@ -471,6 +477,7 @@
 				0A5893BD2A17FADB00A80732 /* AppPlaceholderView.swift in Sources */,
 				0A5893BB2A17F90D00A80732 /* AppTitleLabel.swift in Sources */,
 				0ABE70ED2A4B5A8B001CC002 /* TrackerStore.swift in Sources */,
+				0A97E1682A530633006A576E /* CreatingTrackerDelegate.swift in Sources */,
 				0A3100862A459EE300928DDD /* AppCollectionView.swift in Sources */,
 				0AD79E832A1A2EA900DBE2EC /* UITableView + Extensions.swift in Sources */,
 				0A7291F82A431C170045EEA1 /* SettingsCollectionViewSection.swift in Sources */,
@@ -517,6 +524,7 @@
 				0A5893B52A17C21100A80732 /* UILabel + Extensions.swift in Sources */,
 				0AB8A57F2A1560B9005E239F /* AppButton.swift in Sources */,
 				0AC365342A3336FD00FE6283 /* WeekdayCell.swift in Sources */,
+				0A97E16C2A53DC5E006A576E /* WeekDayMarshall.swift in Sources */,
 				0A4F4EFE2A35DC950073301A /* EmojiCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

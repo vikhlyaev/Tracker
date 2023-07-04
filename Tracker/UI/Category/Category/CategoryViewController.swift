@@ -94,16 +94,8 @@ extension CategoryViewController: NewCategoryDelegate {
 // MARK: - StoreDelegate
 
 extension CategoryViewController: StoreDelegate {
-    func didUpdate(_ update: StoreUpdate) {
-        tableView.performBatchUpdates {
-            guard let insertedIndexes = update.insertedIndexes else { return }
-            let insertedIndexPaths = insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            tableView.insertRows(at: insertedIndexPaths, with: .automatic)
-            
-            guard let deletedIndexes = update.deletedIndexes else { return }
-            let deletedIndexPaths = deletedIndexes.map { IndexPath(item: $0, section: 0) }
-            tableView.deleteRows(at: deletedIndexPaths, with: .fade)
-        }
+    func didUpdate() {
+        tableView.reloadData()
     }
 }
 
@@ -146,6 +138,7 @@ extension CategoryViewController: UITableViewDelegate {
         }
         cell.accessoryType = .checkmark
         delegate?.didSelectCategory(category)
+        dismiss(animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

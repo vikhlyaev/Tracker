@@ -7,15 +7,13 @@ final class CreatingTrackerViewController: UIViewController {
     private lazy var titleLabel = AppTitleLabel(title: "Создание трекера")
     
     private lazy var habitButton = AppButton(title: "Привычка") { [weak self] in
-        self?.present(
-            NewTrackerViewController(with: .habit), animated: true
-        )
+        self?.dismiss(animated: true)
+        self?.delegate?.didSelectTrackerType(.habit)
     }
     
     private lazy var irregularEventsButton = AppButton(title: "Нерегулярные событие") { [weak self] in
-        self?.present(
-            NewTrackerViewController(with: .irregularEvent), animated: true
-        )
+        self?.dismiss(animated: true)
+        self?.delegate?.didSelectTrackerType(.irregularEvent)
     }
     
     private lazy var buttonsStackView: UIStackView = {
@@ -26,7 +24,18 @@ final class CreatingTrackerViewController: UIViewController {
         return stackView
     }()
     
+    private weak var delegate: CreatingTrackerDelegate?
+    
     // MARK: - Life Cycle
+    
+    init(delegate: CreatingTrackerDelegate) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -65,7 +65,8 @@ final class NewTrackerViewController: UIViewController {
             emoji: selectedEmoji,
             schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
         )
-
+        
+        dismiss(animated: true)
         delegate?.didCreateNewTracker(newTracker, to: selectedCategory)
     }
     
@@ -101,7 +102,7 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - Properties
     
-    weak var delegate: NewTrackerDelegate?
+    private weak var delegate: NewTrackerDelegate?
     
     private var name: String? {
         didSet {
@@ -133,8 +134,9 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(with trackerType: TrackerType) {
+    init(with trackerType: TrackerType, delegate: NewTrackerDelegate) {
         self.trackerType = trackerType
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -198,14 +200,19 @@ extension NewTrackerViewController: ScheduleDelegate {
     }
     
     private func updateScheduleCell(days: [WeekDay]) {
-        let selectedDays = days
-            .sorted(by: { $0.rawValue < $1.rawValue })
-            .map { $0.shortTitle }
-            .joined(separator: ", ")
+        var selectedDays: String?
+        if days.count == 7 {
+            selectedDays = "Каждый день"
+        } else {
+            selectedDays = days
+                .sorted(by: { $0.rawValue < $1.rawValue })
+                .map { $0.shortTitle }
+                .joined(separator: ", ")
+        }
         let scheduleCell = tableView.visibleCells.filter({
             $0.tag == SettingsTableViewSection.schedule.rawValue
         }).first as? SettingsCell
-        scheduleCell?.updateSelectedSettings(selectedDays)
+        scheduleCell?.updateSelectedSettings(selectedDays ?? "")
     }
 }
 

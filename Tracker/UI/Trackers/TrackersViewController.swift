@@ -31,8 +31,17 @@ final class TrackersViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: AppCollectionViewHeader.reuseIdentifier
         )
+        collectionView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
+    }()
+    
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.delegate = self
+        return searchController
     }()
     
     // MARK: - Data Source
@@ -40,8 +49,13 @@ final class TrackersViewController: UIViewController {
     private lazy var trackerStore = TrackerStore(delegate: self)
     private lazy var recordStore = RecordStore()
     
-    private var weekDay: Int?
-    private var currentDate: Date?
+    private var currentDate = Calendar.current.startOfDay(for: Date())
+    
+    private var searchText: String = "" {
+        didSet {
+            applyFilter()
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -51,7 +65,7 @@ final class TrackersViewController: UIViewController {
         setConstraints()
         setupNavigationBar()
         setDelegates()
-        dateChanged()
+        applyFilter()
         isEmptyCategories()
     }
     
@@ -63,6 +77,11 @@ final class TrackersViewController: UIViewController {
         view.addSubview(collectionView)
     }
     
+    private func setDelegates() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+    }
+    
     private func isEmptyCategories() {
         trackerStore.isEmpty ? showPlaceholder() : showCollectionView()
     }
@@ -70,17 +89,15 @@ final class TrackersViewController: UIViewController {
     private func showPlaceholder() {
         placeholderView.isHidden = false
         collectionView.isHidden = true
-        navigationItem.searchController = nil
     }
     
     private func showCollectionView() {
         placeholderView.isHidden = true
         collectionView.isHidden = false
-        let searchController = UISearchController()
-        searchController.hidesNavigationBarDuringPresentation = false
-        navigationItem.searchController = searchController
-        navigationItem.searchController?.searchBar.placeholder = "Поиск"
-        navigationItem.searchController?.searchBar.delegate = self
+    }
+    
+    private func applyFilter() {
+        trackerStore.filter(by: currentDate, and: searchText)
     }
     
     // MARK: - Setup NavBar
@@ -89,6 +106,7 @@ final class TrackersViewController: UIViewController {
         title = "Трекеры"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .appBlack
+        navigationItem.searchController = searchController
         navigationItem.leftBarButtonItem = setupLeftBarButtonItem()
         navigationItem.rightBarButtonItem = setupRightBarButtonItem()
     }
@@ -111,22 +129,34 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addButtonTapped() {
-        let creatingTrackerViewController = CreatingTrackerViewController()
+        let creatingTrackerViewController = CreatingTrackerViewController(delegate: self)
         present(creatingTrackerViewController, animated: true)
-    }
-    
-    private func setDelegates() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
     }
     
     @objc
     private func dateChanged() {
-        weekDay = Calendar.current.component(.weekday, from: datePicker.date)
         currentDate = Calendar.current.startOfDay(for: datePicker.date)
-        guard let weekDay else { return }
-        trackerStore.filter(by: weekDay)
+        applyFilter()
         isEmptyCategories()
+        collectionView.reloadData()
+    }
+}
+
+// MARK: - CreatingTrackerDelegate
+
+extension TrackersViewController: CreatingTrackerDelegate {
+    func didSelectTrackerType(_ type: TrackerType) {
+        let newTrackerViewController = NewTrackerViewController(with: type, delegate: self)
+        present(newTrackerViewController, animated: true)
+    }
+}
+
+// MARK: - NewTrackerDelegate
+
+extension TrackersViewController: NewTrackerDelegate {
+    func didCreateNewTracker(_ tracker: Tracker, to category: Category) {
+        dismiss(animated: true)
+        trackerStore.add(tracker, to: category)
         collectionView.reloadData()
     }
 }
@@ -134,7 +164,7 @@ final class TrackersViewController: UIViewController {
 // MARK: - StoreDelegate
 
 extension TrackersViewController: StoreDelegate {
-    func didUpdate(_ update: StoreUpdate) {
+    func didUpdate() {
         isEmptyCategories()
         collectionView.reloadData()
     }
@@ -144,7 +174,6 @@ extension TrackersViewController: StoreDelegate {
 
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
-        guard let currentDate else { return }
         if currentDate < Date() {
             let record = Record(trackerId: id, executionDate: currentDate)
             recordStore.add(record, to: id)
@@ -153,12 +182,10 @@ extension TrackersViewController: TrackerCellDelegate {
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        guard
-            let currentDate,
-            let record = recordStore.fetchRecord(by: id, and: currentDate)
-        else { return }
-        recordStore.delete(record)
-        collectionView.reloadItems(at: [indexPath])
+        if let record = recordStore.fetchRecord(by: id, and: currentDate) {
+            recordStore.delete(record)
+            collectionView.reloadItems(at: [indexPath])
+        }
     }
 }
 
@@ -166,17 +193,14 @@ extension TrackersViewController: TrackerCellDelegate {
 
 extension TrackersViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            dateChanged()
-        } else {
-            guard let weekDay else { return }
-            trackerStore.filter(by: weekDay, and: searchText)
-        }
+        self.searchText = searchText
         collectionView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        dateChanged()
+        self.searchText = ""
+        searchBar.text = ""
+        searchBar.endEditing(true)
         collectionView.reloadData()
     }
 }
@@ -194,7 +218,6 @@ extension TrackersViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
-            let currentDate,
             let currentTracker = trackerStore.object(at: indexPath),
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrackerCell.reuseIdentifier,
@@ -266,7 +289,7 @@ extension TrackersViewController {
             placeholderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             placeholderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
