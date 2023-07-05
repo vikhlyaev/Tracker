@@ -81,9 +81,18 @@ final class CategoryViewController: UIViewController {
         return indexPath == selectedCategoryIndexPath
     }
     
+    private func deselectedCells() {
+        tableView.visibleCells.forEach{ setDeselected($0) }
+    }
+    
     private func setSelected(_ cell: UITableViewCell) {
         cell.accessoryType = .checkmark
         cell.setSelected(true, animated: true)
+    }
+    
+    private func setDeselected(_ cell: UITableViewCell) {
+        cell.setSelected(false, animated: true)
+        cell.accessoryType = .none
     }
     
     // MARK: - Actions
@@ -125,6 +134,7 @@ extension CategoryViewController: UITableViewDataSource {
 
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        deselectedCells()
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.accessoryType = .checkmark
         viewModel?.didSelectRow(at: indexPath)
