@@ -4,6 +4,7 @@ final class SecondOnboarding: UIViewController {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "onboarding-2")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
