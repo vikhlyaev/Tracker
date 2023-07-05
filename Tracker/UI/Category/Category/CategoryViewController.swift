@@ -1,14 +1,6 @@
 import UIKit
 
-protocol CategoryDelegate: AnyObject {
-    func didSelectCategory(_ selectedCategory: Category)
-}
-
 final class CategoryViewController: UIViewController {
-    
-    // MARK: - Delegate
-    
-    weak var delegate: CategoryDelegate?
     
     // MARK: - UI
     
@@ -33,24 +25,20 @@ final class CategoryViewController: UIViewController {
         return button
     }()
     
-    // MARK: - Data Source
+    // MARK: - ViewModel
     
-    private lazy var categoryStore = CategoryStore(delegate: self)
-    
-    // MARK: - Properties
-    
-    private var selectedCategory: Category?
+    var viewModel: CategoryViewModelProtocol? {
+        didSet {
+            viewModel?.viewModelDidChange = { [weak self] viewModel in
+                self?.isEmptyCategories()
+                self?.tableView.reloadData()
+                guard let selectedCategoryIndexPath = viewModel.selectedCategoryIndexPath else { return }
+                self?.selectedCell(at: selectedCategoryIndexPath)
+            }
+        }
+    }
     
     // MARK: - Life Cycle
-    
-    init(selectedCategory: Category?) {
-        self.selectedCategory = selectedCategory
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +64,8 @@ final class CategoryViewController: UIViewController {
     }
     
     private func isEmptyCategories() {
-        categoryStore.isEmpty ? showPlaceholder() : showCollectionView()
+        guard let viewModel else { return }
+        viewModel.isEmpty ? showPlaceholder() : showCollectionView()
     }
     
     private func showPlaceholder() {
@@ -87,6 +76,12 @@ final class CategoryViewController: UIViewController {
     private func showCollectionView() {
         placeholderView.isHidden = true
         tableView.isHidden = false
+    }
+    
+    private func selectedCell(at indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.setSelected(true, animated: true)
+        cell.accessoryType = .checkmark
     }
     
     // MARK: - Actions
@@ -102,16 +97,8 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: NewCategoryDelegate {
     func didCreateNewCategory(_ category: Category) {
-        categoryStore.add(category)
+        viewModel?.addCategory(category)
         isEmptyCategories()
-    }
-}
-
-// MARK: - StoreDelegate
-
-extension CategoryViewController: StoreDelegate {
-    func didUpdate() {
-        tableView.reloadData()
     }
 }
 
@@ -119,23 +106,12 @@ extension CategoryViewController: StoreDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categoryStore.numberOfRowsInSection
+        viewModel?.numberOfRowsInSection ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: CategoryCell.self)
-        guard let category = categoryStore.object(at: indexPath) else { return cell }
-        cell.prepareForReuse()
-        cell.textLabel?.text = category.name
-        cell.backgroundColor = .appBackground
-        cell.layer.masksToBounds = true
-        cell.selectionStyle = .none
-        guard
-            let selectedCategory,
-            selectedCategory == category
-        else { return cell }
-        cell.setSelected(true, animated: true)
-        cell.accessoryType = .checkmark
+        cell.viewModel = viewModel?.cellViewModel(at: indexPath)
         return cell
     }
 }
@@ -144,16 +120,9 @@ extension CategoryViewController: UITableViewDataSource {
 
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard
-            let cell = tableView.cellForRow(at: indexPath),
-            let category = categoryStore.object(at: indexPath)
-        else { return }
-        tableView.visibleCells.forEach {
-            $0.setSelected(false, animated: true)
-            $0.accessoryType = .none
-        }
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.accessoryType = .checkmark
-        delegate?.didSelectCategory(category)
+        viewModel?.didSelectRow(at: indexPath)
         dismiss(animated: true)
     }
     
