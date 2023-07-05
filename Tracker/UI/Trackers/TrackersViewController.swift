@@ -47,7 +47,10 @@ final class TrackersViewController: UIViewController {
     // MARK: - Data Source
     
     private lazy var trackerStore = TrackerStore(delegate: self)
+    
     private lazy var recordStore = RecordStore()
+    
+    // MARK: - Properties
     
     private var currentDate = Calendar.current.startOfDay(for: Date())
     
@@ -126,6 +129,8 @@ final class TrackersViewController: UIViewController {
     private func setupRightBarButtonItem() -> UIBarButtonItem {
         UIBarButtonItem(customView: datePicker)
     }
+    
+    // MARK: - Actions
     
     @objc
     private func addButtonTapped() {

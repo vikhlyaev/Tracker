@@ -1,6 +1,14 @@
 import UIKit
 
+protocol NewTrackerDelegate: AnyObject {
+    func didCreateNewTracker(_ tracker: Tracker, to category: Category)
+}
+
 final class NewTrackerViewController: UIViewController {
+    
+    // MARK: - Delegate
+
+    private weak var delegate: NewTrackerDelegate?
     
     // MARK: - UI
     
@@ -49,30 +57,17 @@ final class NewTrackerViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var createButton = AppButton(title: "Создать") { [weak self] in
-        guard
-            let self,
-            let name,
-            let selectedColor,
-            let selectedEmoji,
-            let selectedCategory
-        else { return }
-        
-        let newTracker = Tracker(
-            id: UUID(),
-            name: name,
-            color: selectedColor,
-            emoji: selectedEmoji,
-            schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
-        )
-        
-        dismiss(animated: true)
-        delegate?.didCreateNewTracker(newTracker, to: selectedCategory)
-    }
+    private lazy var createButton: AppButton = {
+        let button = AppButton(title: "Создать")
+        button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
-    private lazy var cancelButton = AppButton(title: "Отменить", style: .cancel) { [weak self] in
-        self?.dismiss(animated: true)
-    }
+    private lazy var cancelButton: AppButton = {
+        let button = AppButton(title: "Отменить", style: .cancel)
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [cancelButton, createButton])
@@ -102,7 +97,7 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - Properties
     
-    private weak var delegate: NewTrackerDelegate?
+    private let trackerType: TrackerType
     
     private var name: String? {
         didSet {
@@ -129,8 +124,6 @@ final class NewTrackerViewController: UIViewController {
             checkRequiredSettings()
         }
     }
-    
-    private let trackerType: TrackerType
     
     // MARK: - Life Cycle
     
@@ -176,6 +169,34 @@ final class NewTrackerViewController: UIViewController {
         if name != nil && selectedCategory != nil && selectedEmoji != nil && selectedColor != nil {
             createButton.isEnabled = true
         }
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func createButtonTapped() {
+        guard
+            let name,
+            let selectedColor,
+            let selectedEmoji,
+            let selectedCategory
+        else { return }
+        
+        let newTracker = Tracker(
+            id: UUID(),
+            name: name,
+            color: selectedColor,
+            emoji: selectedEmoji,
+            schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
+        )
+        
+        dismiss(animated: true)
+        delegate?.didCreateNewTracker(newTracker, to: selectedCategory)
+    }
+    
+    @objc
+    private func cancelButtonTapped() {
+        dismiss(animated: true)
     }
 }
 

@@ -2,6 +2,8 @@ import UIKit
 
 final class FirstOnboarding: UIViewController {
     
+    // MARK: - UI
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

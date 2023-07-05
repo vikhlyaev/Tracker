@@ -2,11 +2,7 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     
-    private lazy var pages: [UIViewController] = {
-        let firstOnboardingViewController = FirstOnboarding()
-        let secondOnboardingViewController = SecondOnboarding()
-        return [firstOnboardingViewController, secondOnboardingViewController]
-    }()
+    // MARK: - UI
     
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -18,10 +14,21 @@ final class OnboardingViewController: UIPageViewController {
         return pageControl
     }()
     
-    private lazy var endOnboardingButton = AppButton(title: "Вот это технологии!", height: 60) {
-        guard let window = UIApplication.shared.windows.first else { return }
-        window.rootViewController = AppTabBarController()
-    }
+    private lazy var endOnboardingButton: AppButton = {
+        let button = AppButton(title: "Вот это технологии!", height: 60)
+        button.addTarget(self, action: #selector(endOnboardingButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Properties
+    
+    private lazy var pages: [UIViewController] = {
+        let firstOnboardingViewController = FirstOnboarding()
+        let secondOnboardingViewController = SecondOnboarding()
+        return [firstOnboardingViewController, secondOnboardingViewController]
+    }()
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +36,8 @@ final class OnboardingViewController: UIPageViewController {
         setConstraints()
         setDelegates()
     }
+    
+    // MARK: - Setup UI
     
     private func setupView() {
         view.addSubview(pageControl)
@@ -46,6 +55,14 @@ final class OnboardingViewController: UIPageViewController {
     private func setDelegates() {
         dataSource = self
         delegate = self
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func endOnboardingButtonTapped() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        window.rootViewController = AppTabBarController()
     }
 }
 

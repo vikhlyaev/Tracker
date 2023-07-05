@@ -1,6 +1,14 @@
 import UIKit
 
+protocol CategoryDelegate: AnyObject {
+    func didSelectCategory(_ selectedCategory: Category)
+}
+
 final class CategoryViewController: UIViewController {
+    
+    // MARK: - Delegate
+    
+    weak var delegate: CategoryDelegate?
     
     // MARK: - UI
     
@@ -19,19 +27,19 @@ final class CategoryViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var addCategoryButton = AppButton(title: "Добавить категорию") { [weak self] in
-        guard let self else { return }
-        let newCategoryViewController = NewCategoryViewController(delegate: self)
-        self.present(newCategoryViewController, animated: true)
-    }
+    private lazy var addCategoryButton: AppButton = {
+        let button = AppButton(title: "Добавить категорию")
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     // MARK: - Data Source
     
     private lazy var categoryStore = CategoryStore(delegate: self)
     
-    private var selectedCategory: Category?
+    // MARK: - Properties
     
-    weak var delegate: CategoryDelegate?
+    private var selectedCategory: Category?
     
     // MARK: - Life Cycle
     
@@ -79,6 +87,14 @@ final class CategoryViewController: UIViewController {
     private func showCollectionView() {
         placeholderView.isHidden = true
         tableView.isHidden = false
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func addButtonTapped() {
+        let newCategoryViewController = NewCategoryViewController(delegate: self)
+        present(newCategoryViewController, animated: true)
     }
 }
 
