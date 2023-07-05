@@ -46,9 +46,9 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Data Source
     
-    private lazy var trackerStore = TrackerStore(delegate: self)
+    private lazy var trackerStore: TrackerStoreProtocol = TrackerStore(delegate: self)
     
-    private lazy var recordStore = RecordStore()
+    private lazy var recordStore: RecordStoreProtocol = RecordStore()
     
     // MARK: - Properties
     
