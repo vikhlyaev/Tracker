@@ -8,8 +8,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var displayOnboarding: Bool {
         get {
             UserDefaults.standard.bool(forKey: "displayOnboarding")
-        }
-        set {
+        } set {
             UserDefaults.standard.set(newValue, forKey: "displayOnboarding")
         }
     }
