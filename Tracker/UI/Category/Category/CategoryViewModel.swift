@@ -25,11 +25,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     private lazy var categoryStore: CategoryStoreProtocol = CategoryStore(delegate: self)
     
-    var selectedCategoryIndexPath: IndexPath? {
-        didSet {
-            viewModelDidChange?(self)
-        }
-    }
+    var selectedCategoryIndexPath: IndexPath?
     
     var viewModelDidChange: ((CategoryViewModelProtocol) -> Void)?
     
@@ -67,7 +63,6 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         guard let category = categoryStore.object(at: indexPath) else { return }
         selectedCategoryIndexPath = indexPath
         delegate?.didSelectCategory(category, at: selectedCategoryIndexPath)
-        print("\(indexPath) - select: \(selectedCategoryIndexPath!)")
     }
 }
 
