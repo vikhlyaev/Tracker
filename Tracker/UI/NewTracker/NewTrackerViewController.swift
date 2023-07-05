@@ -113,6 +113,8 @@ final class NewTrackerViewController: UIViewController {
         }
     }
     
+    private var selectedCategoryIndexPath: IndexPath?
+    
     private var selectedEmoji: String? {
         didSet {
             checkRequiredSettings()
@@ -203,12 +205,13 @@ final class NewTrackerViewController: UIViewController {
 // MARK: - CategoryDelegate
 
 extension NewTrackerViewController: CategoryDelegate {
-    func didSelectCategory(_ selectedCategory: Category) {
-        self.selectedCategory = selectedCategory
+    func didSelectCategory(_ category: Category, at indexPath: IndexPath?) {
+        self.selectedCategory = category
+        self.selectedCategoryIndexPath = indexPath
         let categoryCell = tableView.visibleCells.filter({
             $0.tag == SettingsTableViewSection.category.rawValue
         }).first as? SettingsCell
-        categoryCell?.updateSelectedSettings(selectedCategory.name)
+        categoryCell?.updateSelectedSettings(category.name)
     }
 }
 
@@ -288,8 +291,12 @@ extension NewTrackerViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
         switch cell.tag {
         case 0:
-            let categoryViewController = CategoryViewController(selectedCategory: selectedCategory)
-            categoryViewController.delegate = self
+            let categoryViewModel = CategoryViewModel(
+                delegate: self,
+                selectedCategoryIndexPath: selectedCategoryIndexPath
+            )
+            let categoryViewController = CategoryViewController()
+            categoryViewController.viewModel = categoryViewModel
             present(categoryViewController, animated: true)
         case 1:
             let scheduleViewController = ScheduleViewController(selectedDays: selectedDays)
