@@ -17,11 +17,7 @@ protocol CategoryDelegate: AnyObject {
 
 final class CategoryViewModel: CategoryViewModelProtocol {
     
-    // MARK: - Delegate
-    
     private weak var delegate: CategoryDelegate?
-    
-    // MARK: - Properties
     
     private lazy var categoryStore: CategoryStoreProtocol = CategoryStore(delegate: self)
     
@@ -37,14 +33,10 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         categoryStore.numberOfRowsInSection
     }
     
-    // MARK: - Init
-    
     init(delegate: CategoryDelegate, selectedCategoryIndexPath: IndexPath? = nil) {
         self.delegate = delegate
         self.selectedCategoryIndexPath = selectedCategoryIndexPath
     }
-    
-    // MARK: - Category Store
     
     func addCategory(_ category: Category) {
         categoryStore.add(category)
