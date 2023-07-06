@@ -40,6 +40,7 @@
 		0AB8A5772A14FD95005E239F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A5762A14FD95005E239F /* StatisticViewController.swift */; };
 		0AB8A57C2A155FB1005E239F /* CreatingTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A57B2A155FB1005E239F /* CreatingTrackerViewController.swift */; };
 		0AB8A57F2A1560B9005E239F /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8A57E2A1560B9005E239F /* AppButton.swift */; };
+		0ABC40D92A5711A500AD8D6D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0ABC40DB2A5711A500AD8D6D /* Localizable.strings */; };
 		0ABE70E22A4998B2001CC002 /* StoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE70E12A4998B2001CC002 /* StoreDelegate.swift */; };
 		0ABE70EB2A4B0184001CC002 /* RecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE70EA2A4B0184001CC002 /* RecordStore.swift */; };
 		0ABE70ED2A4B5A8B001CC002 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE70EC2A4B5A8B001CC002 /* TrackerStore.swift */; };
@@ -100,6 +101,10 @@
 		0AB8A5762A14FD95005E239F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		0AB8A57B2A155FB1005E239F /* CreatingTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingTrackerViewController.swift; sourceTree = "<group>"; };
 		0AB8A57E2A1560B9005E239F /* AppButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButton.swift; sourceTree = "<group>"; };
+		0ABC40D72A57118800AD8D6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		0ABC40D82A57119A00AD8D6D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		0ABC40DA2A5711A500AD8D6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0ABC40DC2A5711A900AD8D6D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0ABE70E12A4998B2001CC002 /* StoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDelegate.swift; sourceTree = "<group>"; };
 		0ABE70EA2A4B0184001CC002 /* RecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStore.swift; sourceTree = "<group>"; };
 		0ABE70EC2A4B5A8B001CC002 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
@@ -182,6 +187,7 @@
 			children = (
 				0A2377E42A0CB18A00B8B2AD /* Assets.xcassets */,
 				0A7291EE2A42FEED0045EEA1 /* TrackerDataModel.xcdatamodeld */,
+				0ABC40DB2A5711A500AD8D6D /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -469,11 +475,11 @@
 			};
 			buildConfigurationList = 0A2377D32A0CB18800B8B2AD /* Build configuration list for PBXProject "Tracker" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = ru;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 				ru,
 			);
 			mainGroup = 0A2377CF2A0CB18800B8B2AD;
@@ -492,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2377E82A0CB18A00B8B2AD /* LaunchScreen.storyboard in Resources */,
+				0ABC40D92A5711A500AD8D6D /* Localizable.strings in Resources */,
 				0A2377E52A0CB18A00B8B2AD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,8 +611,19 @@
 			isa = PBXVariantGroup;
 			children = (
 				0A2377E72A0CB18A00B8B2AD /* Base */,
+				0ABC40D72A57118800AD8D6D /* en */,
+				0ABC40D82A57119A00AD8D6D /* ru */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		0ABC40DB2A5711A500AD8D6D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0ABC40DA2A5711A500AD8D6D /* en */,
+				0ABC40DC2A5711A900AD8D6D /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

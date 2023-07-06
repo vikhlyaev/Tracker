@@ -15,7 +15,11 @@ final class OnboardingViewController: UIPageViewController {
     }()
     
     private lazy var endOnboardingButton: AppButton = {
-        let button = AppButton(title: "Вот это технологии!", height: 60)
+        let buttonText = NSLocalizedString(
+            "onboarding.button",
+            comment: "Text that is displayed in the button on the onboarding"
+        )
+        let button = AppButton(title: buttonText, height: 60)
         button.addTarget(self, action: #selector(endOnboardingButtonTapped), for: .touchUpInside)
         return button
     }()
