@@ -39,9 +39,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
 }
-
-// API Yandex
-// 1c664000-d98d-401a-9ef1-1b0e03208aac
 
