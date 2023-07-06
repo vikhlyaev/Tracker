@@ -32,9 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         guard
-            let configuration = YMMYandexMetricaConfiguration(
-                apiKey: "1c664000-d98d-401a-9ef1-1b0e03208aac"
-            )
+            let apiKey = Bundle.main.object(forInfoDictionaryKey: "API Key") as? String,
+            let configuration = YMMYandexMetricaConfiguration(apiKey: apiKey)
         else { return true }
         YMMYandexMetrica.activate(with: configuration)
         
