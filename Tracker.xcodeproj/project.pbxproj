@@ -25,6 +25,7 @@
 		0A5893BD2A17FADB00A80732 /* AppPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5893BC2A17FADB00A80732 /* AppPlaceholderView.swift */; };
 		0A5FF6E02A551A4600549901 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5FF6DF2A551A4600549901 /* CategoryViewModel.swift */; };
 		0A5FF6E82A55816000549901 /* CategoryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5FF6E72A55816000549901 /* CategoryCellViewModel.swift */; };
+		0A5FF70C2A56B9CC00549901 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A5FF70B2A56B9CC00549901 /* Localizable.strings */; };
 		0A7291F02A42FEED0045EEA1 /* TrackerDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291EE2A42FEED0045EEA1 /* TrackerDataModel.xcdatamodeld */; };
 		0A7291F22A430C7B0045EEA1 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291F12A430C7B0045EEA1 /* TrackerType.swift */; };
 		0A7291F42A430D010045EEA1 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7291F32A430D000045EEA1 /* NewTrackerViewController.swift */; };
@@ -83,6 +84,7 @@
 		0A5893BC2A17FADB00A80732 /* AppPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPlaceholderView.swift; sourceTree = "<group>"; };
 		0A5FF6DF2A551A4600549901 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		0A5FF6E72A55816000549901 /* CategoryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellViewModel.swift; sourceTree = "<group>"; };
+		0A5FF70B2A56B9CC00549901 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		0A7291EF2A42FEED0045EEA1 /* TrackerDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerDataModel.xcdatamodel; sourceTree = "<group>"; };
 		0A7291F12A430C7B0045EEA1 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		0A7291F32A430D000045EEA1 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			children = (
 				0A2377E42A0CB18A00B8B2AD /* Assets.xcassets */,
 				0A7291EE2A42FEED0045EEA1 /* TrackerDataModel.xcdatamodeld */,
+				0A5FF70B2A56B9CC00549901 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -423,7 +426,6 @@
 				81B12CC5BC8FA913852DEDE1 /* Pods-Tracker.debug.xcconfig */,
 				C27FFB99CDB5756DAA504E7D /* Pods-Tracker.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -489,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2377E82A0CB18A00B8B2AD /* LaunchScreen.storyboard in Resources */,
+				0A5FF70C2A56B9CC00549901 /* Localizable.strings in Resources */,
 				0A2377E52A0CB18A00B8B2AD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
