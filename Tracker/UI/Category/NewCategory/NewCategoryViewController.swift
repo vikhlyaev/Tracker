@@ -73,6 +73,10 @@ extension NewCategoryViewController: UITextFieldDelegate {
         let symbols = text.filter { $0.isNumber || $0.isLetter || $0.isSymbol || $0.isPunctuation }.count
         finishedButton.isEnabled = symbols != 0
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }
 
 // MARK: - Setting Constraints
