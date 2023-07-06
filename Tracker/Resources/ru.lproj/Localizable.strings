@@ -20,7 +20,7 @@
 "filters.completedButton"="Завершенные";
 "filters.uncompletedButton"="Не завершенные";
 "tabBar.trackersTab"="Трекеры";
-"tabBar.trackersTab"="Статистика";
+"tabBar.statsTab"="Статистика";
 "creatingTracker.title"="Создание трекера";
 "creatingTracker.habitButton"="Привычка";
 "creatingTracker.irregularEventButton"="Нерегулярное событие";

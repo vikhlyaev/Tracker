@@ -20,7 +20,7 @@
 "filters.completedButton"="Completed";
 "filters.uncompletedButton"="Uncompleted";
 "tabBar.trackersTab"="Trackers";
-"tabBar.trackersTab"="Stats";
+"tabBar.statsTab"="Stats";
 "creatingTracker.title"="Creating a tracker";
 "creatingTracker.habitButton"="Habit";
 "creatingTracker.irregularEventButton"="Irregular Event";
