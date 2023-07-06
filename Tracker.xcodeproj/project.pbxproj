@@ -71,6 +71,8 @@
 		0A2377E92A0CB18A00B8B2AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A2378142A0CE54900B8B2AD /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
 		0A3100852A459EE300928DDD /* AppCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCollectionView.swift; sourceTree = "<group>"; };
+		0A4033A42A56D11C0048A727 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		0A4033A52A56D1D00048A727 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		0A4F4EFD2A35DC950073301A /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		0A4F4EFF2A35E71A0073301A /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		0A4F4F052A35FC3C0073301A /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -137,6 +139,8 @@
 		0A2377CF2A0CB18800B8B2AD = {
 			isa = PBXGroup;
 			children = (
+				0A4033A52A56D1D00048A727 /* Config.xcconfig */,
+				0A4033A42A56D11C0048A727 /* Secrets.xcconfig */,
 				0A2377DA2A0CB18800B8B2AD /* Tracker */,
 				0A2377D92A0CB18800B8B2AD /* Products */,
 				B9A24AAED356EDDFF7A28A3E /* Pods */,
@@ -613,6 +617,7 @@
 /* Begin XCBuildConfiguration section */
 		0A2377EA2A0CB18A00B8B2AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A4033A52A56D1D00048A727 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -674,6 +679,7 @@
 		};
 		0A2377EB2A0CB18A00B8B2AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A4033A52A56D1D00048A727 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
