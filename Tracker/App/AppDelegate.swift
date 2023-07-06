@@ -1,4 +1,5 @@
 import UIKit
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,8 +30,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = AppTabBarController()
         }
         window?.makeKeyAndVisible()
+        
+        guard
+            let configuration = YMMYandexMetricaConfiguration(
+                apiKey: "1c664000-d98d-401a-9ef1-1b0e03208aac"
+            )
+        else { return true }
+        YMMYandexMetrica.activate(with: configuration)
+        
         return true
     }
     
 }
+
+// API Yandex
+// 1c664000-d98d-401a-9ef1-1b0e03208aac
 
