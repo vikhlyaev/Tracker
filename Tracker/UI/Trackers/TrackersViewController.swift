@@ -78,6 +78,9 @@ final class TrackersViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(placeholderView)
         view.addSubview(collectionView)
+        
+        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API Key") as? String
+        print(apiKey)
     }
     
     private func setDelegates() {
