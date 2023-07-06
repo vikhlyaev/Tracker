@@ -12,9 +12,19 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: trackerType.title)
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "newTracker.title",
+            comment: "Screen title"
+        )
+    )
     
-    private lazy var textField = AppTextField(placeholder: "Введите название трекера")
+    private lazy var textField = AppTextField(
+        placeholder: NSLocalizedString(
+            "newTracker.nameTextFieldPlaceholder",
+            comment: "Placeholder text"
+        )
+    )
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -58,13 +68,24 @@ final class NewTrackerViewController: UIViewController {
     }()
     
     private lazy var createButton: AppButton = {
-        let button = AppButton(title: "Создать")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "newTracker.createButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var cancelButton: AppButton = {
-        let button = AppButton(title: "Отменить", style: .cancel)
+        let button = AppButton(
+            title: NSLocalizedString(
+                "newTracker.cancelButton",
+                comment: "Button text"
+            ),
+            style: .cancel
+        )
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -226,7 +247,10 @@ extension NewTrackerViewController: ScheduleDelegate {
     private func updateScheduleCell(days: [WeekDay]) {
         var selectedDays: String?
         if days.count == 7 {
-            selectedDays = "Каждый день"
+            selectedDays = NSLocalizedString(
+                "scheduleCell.everyDay",
+                comment: "Every day label"
+            )
         } else {
             selectedDays = days
                 .sorted(by: { $0.rawValue < $1.rawValue })

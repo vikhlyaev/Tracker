@@ -12,7 +12,12 @@ final class ScheduleViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: "Расписание")
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "schedule.title",
+            comment: "Screen title"
+        )
+    )
     
     private lazy var weekDaysTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -24,7 +29,12 @@ final class ScheduleViewController: UIViewController {
     }()
     
     private lazy var doneButton: AppButton = {
-        let button = AppButton(title: "Готово")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "schedule.doneButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()

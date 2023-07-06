@@ -4,7 +4,13 @@ final class StatisticViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var placeholderView = AppPlaceholderView(image: UIImage.emptyStatistic, text: "Анализировать пока нечего")
+    private lazy var placeholderView = AppPlaceholderView(
+        image: UIImage.emptyStatistic,
+        text: NSLocalizedString(
+            "stats.emptyPlaceholderView",
+            comment: "Placeholder text"
+        )
+    )
     
     // MARK: - Life Cycle
     
@@ -24,7 +30,10 @@ final class StatisticViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Статистика"
+        title = NSLocalizedString(
+            "stats.title",
+            comment: "Screen title"
+        )
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 }

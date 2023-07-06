@@ -7,9 +7,15 @@ enum SettingsCollectionViewSection {
     var title: String {
         switch self {
         case .emoji:
-            return "Emoji"
+            return NSLocalizedString(
+                "newTracker.emojiTitle",
+                comment: "Emoji title"
+            )
         case .color:
-            return "Цвет"
+            return NSLocalizedString(
+                "newTracker.colorTitle",
+                comment: "Color title"
+            )
         }
     }
 }

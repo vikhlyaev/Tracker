@@ -7,9 +7,15 @@ enum SettingsTableViewSection: Int, CaseIterable {
     var title: String {
         switch self {
         case .category:
-            return "Категория"
+            return NSLocalizedString(
+                "newTracker.categoryButton",
+                comment: "Category title"
+            )
         case .schedule:
-            return "Расписание"
+            return NSLocalizedString(
+                "newTracker.scheduleButton",
+                comment: "Category title"
+            )
         }
     }
 }

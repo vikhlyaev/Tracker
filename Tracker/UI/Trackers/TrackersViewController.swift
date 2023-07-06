@@ -4,7 +4,13 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var placeholderView = AppPlaceholderView(image: UIImage.emptyList, text: "Что будем отслеживать?")
+    private lazy var placeholderView = AppPlaceholderView(
+        image: UIImage.emptyList,
+        text: NSLocalizedString(
+            "trackers.emptyPlaceholderView",
+            comment: "Placeholder text"
+        )
+    )
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -37,9 +43,13 @@ final class TrackersViewController: UIViewController {
     }()
     
     private lazy var searchController: UISearchController = {
+        let placeholderText = NSLocalizedString(
+            "trackers.searchTextFieldPlaceholder",
+            comment: "Placeholder text"
+        )
         let searchController = UISearchController()
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = placeholderText
         searchController.searchBar.delegate = self
         return searchController
     }()
@@ -109,7 +119,10 @@ final class TrackersViewController: UIViewController {
     // MARK: - Setup NavBar
     
     private func setupNavigationBar() {
-        title = "Трекеры"
+        title = NSLocalizedString(
+            "trackers.title",
+            comment: "Screen title"
+        )
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .appBlack
         navigationItem.searchController = searchController
