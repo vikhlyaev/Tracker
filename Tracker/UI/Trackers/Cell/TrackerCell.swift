@@ -114,18 +114,6 @@ final class TrackerCell: UICollectionViewCell {
         )
     }
     
-    private func pluralizeDays(_ number: Int) -> String {
-        let remainder10 = number % 10
-        let remainder100 = number % 100
-        if remainder10 == 1 && remainder100 != 11 {
-            return "\(number) день"
-        } else if remainder10 >= 2 && remainder10 <= 4 && (remainder100 < 10 || remainder100 >= 20) {
-            return "\(number) дня"
-        } else {
-            return "\(number) дней"
-        }
-    }
-    
     func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath) {
         self.isCompletedToday = isCompletedToday
         self.trackerId = tracker.id
@@ -135,7 +123,10 @@ final class TrackerCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         doneButton.backgroundColor = tracker.color
         isCompletedToday ? setCompletedButton() : setUncompletedButton()
-        counterLabel.text = pluralizeDays(completedDays)
+        counterLabel.text = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of days"),
+            completedDays
+        )
     }
     
     // MARK: - Actions
