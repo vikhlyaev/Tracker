@@ -35,15 +35,16 @@ final class NewTrackerViewController: UIViewController {
     
     private lazy var tableView: AppTableView = {
         let tableView = AppTableView(frame: .zero)
+        tableView.backgroundColor = .appBackground
+        tableView.separatorColor = .appGray
+        tableView.bounces = false
+        tableView.registerReusableCell(cellType: SettingsCell.self)
         tableView.separatorInset = UIEdgeInsets(
             top: 0,
             left: 16,
             bottom: 0,
             right: 16
         )
-        tableView.separatorColor = .appGray
-        tableView.bounces = false
-        tableView.registerReusableCell(cellType: SettingsCell.self)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -54,6 +55,7 @@ final class NewTrackerViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: layout
         )
+        collectionView.backgroundColor = .appWhite
         collectionView.bounces = false
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = true
