@@ -14,10 +14,9 @@ final class TrackersViewController: UIViewController {
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.locale = Locale.current
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
-        datePicker.calendar.firstWeekday = 2
         datePicker.tintColor = .appBlue
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
