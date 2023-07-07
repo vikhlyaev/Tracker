@@ -4,7 +4,6 @@
 "trackers.title"="Trackers";
 "trackers.searchTextFieldPlaceholder"="Search";
 "trackers.emptyPlaceholderView"="What will we track?";
-"trackers.daysLabel"="";
 "trackers.pinButton"="Pin";
 "trackers.unpinButton"="Unpin";
 "trackers.editButton"="Edit";
