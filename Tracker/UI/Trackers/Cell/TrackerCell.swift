@@ -75,6 +75,10 @@ final class TrackerCell: UICollectionViewCell {
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     
+    var previewView: UIView {
+        wrapperView
+    }
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {

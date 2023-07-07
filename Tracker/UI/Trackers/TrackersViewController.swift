@@ -112,6 +112,24 @@ final class TrackersViewController: UIViewController {
         trackerStore.filter(by: currentDate, and: searchText)
     }
     
+    private func makeContextMenu(by indexPath: IndexPath) -> UIMenu {
+        let pinAction = UIAction(title: NSLocalizedString("trackers.pinButton", comment: "Pin tracker")) { [weak self] _ in
+            print("AAA")
+        }
+        
+        let editAction = UIAction(title: NSLocalizedString("trackers.editButton", comment: "Edit tracker")) { [weak self] _ in
+            print("BBB")
+        }
+        
+        let deleteAction = UIAction(
+            title: NSLocalizedString("trackers.deleteButton", comment: "Delete tracker"),
+            attributes: .destructive) { [weak self] _ in
+                print("CCC")
+        }
+        
+        return UIMenu(children: [pinAction, editAction, deleteAction])
+    }
+    
     // MARK: - Setup NavBar
     
     private func setupNavigationBar() {
@@ -278,6 +296,28 @@ extension TrackersViewController: UICollectionViewDataSource {
 extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { suggestedActions in
+            self.makeContextMenu(by: indexPath)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell
+        else { return nil }
+        return UITargetedPreview(view: cell.previewView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell
+        else { return nil }
+        return UITargetedPreview(view: cell.previewView)
     }
 }
 
