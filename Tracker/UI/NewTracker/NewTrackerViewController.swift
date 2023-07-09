@@ -212,7 +212,8 @@ final class NewTrackerViewController: UIViewController {
             name: name,
             color: selectedColor,
             emoji: selectedEmoji,
-            schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays)
+            schedule: selectedDays.isEmpty ? WeekDay.allCases : Array(selectedDays),
+            isPinned: false
         )
         
         dismiss(animated: true)

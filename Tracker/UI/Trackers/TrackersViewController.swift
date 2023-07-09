@@ -112,19 +112,26 @@ final class TrackersViewController: UIViewController {
         trackerStore.filter(by: currentDate, and: searchText)
     }
     
-    private func makeContextMenu(by indexPath: IndexPath) -> UIMenu {
-        let pinAction = UIAction(title: NSLocalizedString("trackers.pinButton", comment: "Pin tracker")) { [weak self] _ in
-            print("AAA")
+    private func makeContextMenu(by indexPath: IndexPath) -> UIMenu? {
+        guard let tracker = trackerStore.object(at: indexPath) else { return nil }
+        let pinTitle = NSLocalizedString("trackers.pinButton", comment: "Pin tracker")
+        let unpinTitle = NSLocalizedString("trackers.unpinButton", comment: "Unpin tracker")
+        
+        let pinAction = UIAction(title: tracker.isPinned ? unpinTitle : pinTitle) { [weak self] _ in
+            self?.trackerStore.pinTrackerToogle(at: indexPath)
         }
         
         let editAction = UIAction(title: NSLocalizedString("trackers.editButton", comment: "Edit tracker")) { [weak self] _ in
-            print("BBB")
+            
         }
         
         let deleteAction = UIAction(
             title: NSLocalizedString("trackers.deleteButton", comment: "Delete tracker"),
             attributes: .destructive) { [weak self] _ in
-                print("CCC")
+                let alert = AlertFactory.shared.makeAlertConfirmingDeletion { [weak self] in
+                    self?.trackerStore.deleteTracker(at: indexPath)
+                }
+                self?.present(alert, animated: true)
         }
         
         return UIMenu(children: [pinAction, editAction, deleteAction])
@@ -191,7 +198,7 @@ extension TrackersViewController: CreatingTrackerDelegate {
 extension TrackersViewController: NewTrackerDelegate {
     func didCreateNewTracker(_ tracker: Tracker, to category: Category) {
         dismiss(animated: true)
-        trackerStore.add(tracker, to: category)
+        trackerStore.addTracker(tracker, to: category)
         collectionView.reloadData()
     }
 }
@@ -212,14 +219,22 @@ extension TrackersViewController: TrackerCellDelegate {
         if currentDate < Date() {
             let record = Record(trackerId: id, executionDate: currentDate)
             recordStore.add(record, to: id)
-            collectionView.reloadItems(at: [indexPath])
+            guard let indexPaths = trackerStore.getIndexPathsCompletedTracker(by: id) else {
+                collectionView.reloadItems(at: [indexPath])
+                return
+            }
+            collectionView.reloadItems(at: indexPaths)
         }
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
         if let record = recordStore.fetchRecord(by: id, and: currentDate) {
             recordStore.delete(record)
-            collectionView.reloadItems(at: [indexPath])
+            guard let indexPaths = trackerStore.getIndexPathsCompletedTracker(by: id) else {
+                collectionView.reloadItems(at: [indexPath])
+                return
+            }
+            collectionView.reloadItems(at: indexPaths)
         }
     }
 }
@@ -244,11 +259,11 @@ extension TrackersViewController: UISearchBarDelegate {
 
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        trackerStore.numberOfSections
+        return trackerStore.numberOfSections
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        trackerStore.numberOfRowsInSection(section)
+        return trackerStore.numberOfRowsInSection(section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -261,7 +276,6 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
-        
         let isCompletedToday = recordStore.isTrackerCompletedToday(by: currentTracker.id, and: currentDate)
         let completedDays = recordStore.completedTrackers(by: currentTracker.id)
         
