@@ -116,6 +116,8 @@ final class TrackerStore: NSObject {
     }
 }
 
+// MARK: - TrackerStoreProtocol
+
 extension TrackerStore: TrackerStoreProtocol {
     
     var isEmpty: Bool {
