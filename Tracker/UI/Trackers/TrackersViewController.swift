@@ -228,14 +228,14 @@ final class TrackersViewController: UIViewController {
 
 extension TrackersViewController: CreatingTrackerDelegate {
     func didSelectTrackerType(_ type: TrackerType) {
-        let newTrackerViewController = NewTrackerViewController(with: type, delegate: self)
+        let newTrackerViewController = TrackerDetailsViewController(trackerType: type, delegate: self)
         present(newTrackerViewController, animated: true)
     }
 }
 
-// MARK: - NewTrackerDelegate
+// MARK: - TrackerDetailsDelegate
 
-extension TrackersViewController: NewTrackerDelegate {
+extension TrackersViewController: TrackerDetailsDelegate {
     func didCreateNewTracker(_ tracker: Tracker, to category: Category) {
         dismiss(animated: true)
         trackerStore.addTracker(tracker, to: category)

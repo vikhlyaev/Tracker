@@ -1,14 +1,14 @@
 import UIKit
 
-protocol NewTrackerDelegate: AnyObject {
+protocol TrackerDetailsDelegate: AnyObject {
     func didCreateNewTracker(_ tracker: Tracker, to category: Category)
 }
 
-final class NewTrackerViewController: UIViewController {
+final class TrackerDetailsViewController: UIViewController {
     
     // MARK: - Delegate
 
-    private weak var delegate: NewTrackerDelegate?
+    private weak var delegate: TrackerDetailsDelegate?
     
     // MARK: - UI
     
@@ -152,7 +152,7 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(with trackerType: TrackerType, delegate: NewTrackerDelegate) {
+    init(trackerType: TrackerType, delegate: TrackerDetailsDelegate) {
         self.trackerType = trackerType
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
@@ -228,7 +228,7 @@ final class NewTrackerViewController: UIViewController {
 
 // MARK: - CategoryDelegate
 
-extension NewTrackerViewController: CategoryDelegate {
+extension TrackerDetailsViewController: CategoryDelegate {
     func didSelectCategory(_ category: Category, at indexPath: IndexPath?) {
         self.selectedCategory = category
         self.selectedCategoryIndexPath = indexPath
@@ -241,7 +241,7 @@ extension NewTrackerViewController: CategoryDelegate {
 
 // MARK: - ScheduleDelegate
 
-extension NewTrackerViewController: ScheduleDelegate {
+extension TrackerDetailsViewController: ScheduleDelegate {
     func didSelectDays(_ days: Set<WeekDay>) {
         selectedDays = days
         updateScheduleCell(days: Array(days))
@@ -269,7 +269,7 @@ extension NewTrackerViewController: ScheduleDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension NewTrackerViewController: UITextFieldDelegate {
+extension TrackerDetailsViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let text = textField.text ?? ""
         let symbols = text.filter { $0.isNumber || $0.isLetter || $0.isSymbol || $0.isPunctuation }.count
@@ -283,7 +283,7 @@ extension NewTrackerViewController: UITextFieldDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension NewTrackerViewController: UITableViewDataSource {
+extension TrackerDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch trackerType {
         case .habit:
@@ -312,7 +312,7 @@ extension NewTrackerViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension NewTrackerViewController: UITableViewDelegate {
+extension TrackerDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
@@ -346,7 +346,7 @@ extension NewTrackerViewController: UITableViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 
-extension NewTrackerViewController: UICollectionViewDataSource {
+extension TrackerDetailsViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         settings.count
     }
@@ -386,7 +386,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension NewTrackerViewController: UICollectionViewDelegate {
+extension TrackerDetailsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         (collectionView.indexPathsForSelectedItems ?? [])
             .filter({ $0.section == indexPath.section && $0.item != indexPath.item && $0.row != indexPath.row })
@@ -402,7 +402,7 @@ extension NewTrackerViewController: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
+extension TrackerDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         CGSize(
             width: collectionView.frame.width,
@@ -437,7 +437,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Setting Constraints
 
-extension NewTrackerViewController {
+extension TrackerDetailsViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
