@@ -6,9 +6,11 @@ protocol TrackerStoreProtocol {
     var numberOfSections: Int { get }
     func numberOfRowsInSection(_ section: Int) -> Int
     func addTracker(_ tracker: Tracker, to category: Category)
+    func updateTracker(_ tracker: Tracker, to category: Category?)
     func deleteTracker(at indexPath: IndexPath)
     func object(at indexPath: IndexPath) -> Tracker?
     func header(at indexPath: IndexPath) -> String?
+    func category(at indexPath: IndexPath) -> Category?
     func filter(by date: Date, and searchText: String)
     func pinTrackerToogle(at indexPath: IndexPath)
     func getIndexPathsCompletedTracker(by id: UUID) -> [IndexPath]?
@@ -108,6 +110,20 @@ final class TrackerStore: NSObject {
         )
     }
     
+    private func convert(managedObject: CategoryManagedObject) -> Category? {
+        guard
+            let id = managedObject.id,
+            let name = managedObject.name,
+            let trackerManagedObjects = managedObject.trackers?.array as? [TrackerManagedObject]
+        else { return nil }
+        let trackers: [Tracker] = trackerManagedObjects.compactMap({ convert(managedObject: $0) })
+        return Category(
+            id: id,
+            name: name,
+            trackers: trackers
+        )
+    }
+    
     private func fetchTrackerManagedObject(by id: UUID) -> TrackerManagedObject? {
         let request = TrackerManagedObject.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
@@ -160,6 +176,20 @@ extension TrackerStore: TrackerStoreProtocol {
         return convert(managedObject: trackerManagedObject)
     }
     
+    func object(at indexPath: IndexPath) -> TrackerManagedObject? {
+        if !pinnedTrackersIsEmpty {
+            if indexPath.section == 0 {
+                return pinnedTrackersFetchedResultController.object(at: indexPath)
+            } else {
+                let newIndexPath = IndexPath(item: indexPath.item, section: indexPath.section - 1)
+                let trackerManagedObject = fetchedResultController.object(at: newIndexPath)
+                return trackerManagedObject
+            }
+        }
+        let trackerManagedObject = fetchedResultController.object(at: indexPath)
+        return trackerManagedObject
+    }
+    
     func header(at indexPath: IndexPath) -> String? {
         if !pinnedTrackersIsEmpty {
             if indexPath.section == 0 {
@@ -169,6 +199,14 @@ extension TrackerStore: TrackerStoreProtocol {
             }
         }
         return fetchedResultController.sections?[indexPath.section].name
+    }
+    
+    func category(at indexPath: IndexPath) -> Category? {
+        guard
+            let trackerManagedObject: TrackerManagedObject = object(at: indexPath),
+            let categoryManagedObject = trackerManagedObject.category
+        else { return nil }
+        return convert(managedObject: categoryManagedObject)
     }
     
     func addTracker(_ tracker: Tracker, to category: Category) {
@@ -181,6 +219,31 @@ extension TrackerStore: TrackerStoreProtocol {
                 else { return }
                 let trackerManagedObject = convert(tracker: tracker)
                 categoryManagedObject.addToTrackers(trackerManagedObject)
+                try context.save()
+            }
+        }
+    }
+    
+    func updateTracker(_ tracker: Tracker, to category: Category?) {
+        try? dataStore.performSync { context in
+            Result {
+                guard
+                    let trackerManagedObject = fetchedResultController.fetchedObjects?.first(where: {
+                        $0.id == tracker.id
+                    })
+                else { return }
+                trackerManagedObject.name = tracker.name
+                trackerManagedObject.emoji = tracker.emoji
+                trackerManagedObject.hexColor = ColorMarshall.shared.encode(color: tracker.color)
+                trackerManagedObject.schedule = WeekDayMarshall.shared.encode(weekDays: tracker.schedule)
+                trackerManagedObject.isPinned = tracker.isPinned
+                if let category {
+                    let request = CategoryManagedObject.fetchRequest()
+                    request.predicate = NSPredicate(format: "id == %@", category.id as CVarArg)
+                    if let categoryManagedObject = try? context.fetch(request).first {
+                        trackerManagedObject.category = categoryManagedObject
+                    }
+                }
                 try context.save()
             }
         }

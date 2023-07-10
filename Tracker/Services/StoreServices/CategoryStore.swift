@@ -39,13 +39,13 @@ final class CategoryStore: NSObject {
 
     // MARK: - Init
     
-    init(dataStore: DataStore, delegate: StoreDelegate) {
+    init(dataStore: DataStore, delegate: StoreDelegate?) {
         self.dataStore = dataStore
         self.context = dataStore.managedObjectContext
         self.delegate = delegate
     }
     
-    convenience init(delegate: StoreDelegate) {
+    convenience init(delegate: StoreDelegate? = nil) {
         self.init(dataStore: DataStore.shared, delegate: delegate)
     }
     

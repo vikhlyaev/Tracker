@@ -2,6 +2,7 @@ import UIKit
 
 protocol TrackerDetailsDelegate: AnyObject {
     func didCreateNewTracker(_ tracker: Tracker, to category: Category)
+    func didUpdateTracker(_ tracker: Tracker, to category: Category?)
 }
 
 final class TrackerDetailsViewController: UIViewController {
@@ -120,6 +121,14 @@ final class TrackerDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
+    // Editing Tracker
+    
+    private var tracker: Tracker?
+    
+    private var category: Category?
+    
+    // Creating Tracker
+    
     private let trackerType: TrackerType
     
     private var name: String? {
@@ -152,6 +161,8 @@ final class TrackerDetailsViewController: UIViewController {
     
     // MARK: - Life Cycle
     
+    // Creating Tracker
+    
     init(trackerType: TrackerType, delegate: TrackerDetailsDelegate) {
         self.trackerType = trackerType
         self.delegate = delegate
@@ -162,11 +173,27 @@ final class TrackerDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Editing Tracker
+    
+    convenience init(tracker: Tracker, category: Category, delegate: TrackerDetailsDelegate) {
+        self.init(trackerType: .habit, delegate: delegate)
+        self.tracker = tracker
+        self.category = category
+        changeUI()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setConstraints()
         setDelegates()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard let tracker, let category else { return }
+        loadTracker(tracker, category: category)
     }
     
     // MARK: - Setup UI
@@ -196,6 +223,73 @@ final class TrackerDetailsViewController: UIViewController {
         }
     }
     
+    private func loadTracker(_ tracker: Tracker, category: Category) {
+        name = tracker.name
+        textField.text = tracker.name
+        selectedDays = Set(tracker.schedule)
+        selectedEmoji = tracker.emoji
+        selectedColor = tracker.color
+        selectedCategory = category
+        updateSelectedSettings(with: category)
+        updateScheduleCell(days: tracker.schedule)
+        guard let selectedEmoji, let selectedColor else { return }
+        setSelectedCellsInCollectionView(emoji: selectedEmoji, color: selectedColor)
+    }
+    
+    private func changeUI() {
+        titleLabel.setTitle(NSLocalizedString("editTracker.title", comment: "Edit tracker title"))
+        createButton.setTitle(NSLocalizedString("editTracker.saveButton", comment: "Save tracker button text"), for: .normal)
+        createButton.removeTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    }
+    
+    private func updateSelectedSettings(with category: Category) {
+        let categoryCell = tableView.visibleCells.filter({
+            $0.tag == SettingsTableViewSection.category.rawValue
+        }).first as? SettingsCell
+        categoryCell?.updateSelectedSettings(category.name)
+    }
+    
+    private func updateScheduleCell(days: [WeekDay]) {
+        var selectedDays: String?
+        if days.count == 7 {
+            selectedDays = NSLocalizedString(
+                "scheduleCell.everyDay",
+                comment: "Every day label"
+            )
+        } else {
+            selectedDays = days
+                .sorted(by: { $0.rawValue < $1.rawValue })
+                .map { $0.shortTitle }
+                .joined(separator: ", ")
+        }
+        let scheduleCell = tableView.visibleCells.filter({
+            $0.tag == SettingsTableViewSection.schedule.rawValue
+        }).first as? SettingsCell
+        scheduleCell?.updateSelectedSettings(selectedDays ?? "")
+    }
+    
+    private func setSelectedCellsInCollectionView(emoji: String, color: UIColor) {
+        var emojiCellIndexPath = IndexPath()
+        var colorCellIndexPath = IndexPath()
+        settings.forEach {
+            switch $0 {
+            case .emoji(let emojiItems):
+                emojiCellIndexPath = IndexPath(
+                    item: Int(emojiItems.firstIndex(of: emoji) ?? 0),
+                    section: 0
+                )
+            case .color(let colorItems):
+                colorCellIndexPath = IndexPath(
+                    item: Int(colorItems.firstIndex(of: color) ?? 0),
+                    section: 1
+                )
+            }
+        }
+        collectionView.selectItem(at: emojiCellIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        collectionView.selectItem(at: colorCellIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+    }
+    
     // MARK: - Actions
     
     @objc
@@ -221,6 +315,33 @@ final class TrackerDetailsViewController: UIViewController {
     }
     
     @objc
+    private func saveButtonTapped() {
+        guard
+            let name,
+            let selectedColor,
+            let selectedEmoji,
+            let selectedCategory,
+            let tracker,
+            let category
+        else { return }
+        
+        let updatedTracker = Tracker(
+            id: tracker.id,
+            name: name,
+            color: selectedColor,
+            emoji: selectedEmoji,
+            schedule: Array(selectedDays),
+            isPinned: tracker.isPinned
+        )
+        
+        dismiss(animated: true)
+        delegate?.didUpdateTracker(
+            updatedTracker,
+            to: selectedCategory == category ? nil : selectedCategory
+        )
+    }
+    
+    @objc
     private func cancelButtonTapped() {
         dismiss(animated: true)
     }
@@ -232,10 +353,7 @@ extension TrackerDetailsViewController: CategoryDelegate {
     func didSelectCategory(_ category: Category, at indexPath: IndexPath?) {
         self.selectedCategory = category
         self.selectedCategoryIndexPath = indexPath
-        let categoryCell = tableView.visibleCells.filter({
-            $0.tag == SettingsTableViewSection.category.rawValue
-        }).first as? SettingsCell
-        categoryCell?.updateSelectedSettings(category.name)
+        updateSelectedSettings(with: category)
     }
 }
 
@@ -245,25 +363,6 @@ extension TrackerDetailsViewController: ScheduleDelegate {
     func didSelectDays(_ days: Set<WeekDay>) {
         selectedDays = days
         updateScheduleCell(days: Array(days))
-    }
-    
-    private func updateScheduleCell(days: [WeekDay]) {
-        var selectedDays: String?
-        if days.count == 7 {
-            selectedDays = NSLocalizedString(
-                "scheduleCell.everyDay",
-                comment: "Every day label"
-            )
-        } else {
-            selectedDays = days
-                .sorted(by: { $0.rawValue < $1.rawValue })
-                .map { $0.shortTitle }
-                .joined(separator: ", ")
-        }
-        let scheduleCell = tableView.visibleCells.filter({
-            $0.tag == SettingsTableViewSection.schedule.rawValue
-        }).first as? SettingsCell
-        scheduleCell?.updateSelectedSettings(selectedDays ?? "")
     }
 }
 

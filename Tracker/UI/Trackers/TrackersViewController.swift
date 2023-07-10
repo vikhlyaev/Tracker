@@ -143,7 +143,10 @@ final class TrackersViewController: UIViewController {
     }
     
     private func makeContextMenu(by indexPath: IndexPath) -> UIMenu? {
-        guard let tracker = trackerStore.object(at: indexPath) else { return nil }
+        guard
+            let tracker = trackerStore.object(at: indexPath),
+            let category = trackerStore.category(at: indexPath)
+        else { return nil }
         let pinTitle = NSLocalizedString("trackers.pinButton", comment: "Pin tracker")
         let unpinTitle = NSLocalizedString("trackers.unpinButton", comment: "Unpin tracker")
         
@@ -152,6 +155,9 @@ final class TrackersViewController: UIViewController {
         }
         
         let editAction = UIAction(title: NSLocalizedString("trackers.editButton", comment: "Edit tracker")) { [weak self] _ in
+            guard let self else { return }
+            let trackerDetailsViewController = TrackerDetailsViewController(tracker: tracker, category: category, delegate: self)
+            self.present(trackerDetailsViewController, animated: true)
             AnalyticsService.shared.report(event: .click, screen: .trackers, item: .edit)
         }
         
@@ -239,6 +245,12 @@ extension TrackersViewController: TrackerDetailsDelegate {
     func didCreateNewTracker(_ tracker: Tracker, to category: Category) {
         dismiss(animated: true)
         trackerStore.addTracker(tracker, to: category)
+        collectionView.reloadData()
+    }
+    
+    func didUpdateTracker(_ tracker: Tracker, to category: Category?) {
+        dismiss(animated: true)
+        trackerStore.updateTracker(tracker, to: category)
         collectionView.reloadData()
     }
 }
