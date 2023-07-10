@@ -33,6 +33,8 @@
 "newTracker.colorTitle"="Color";
 "newTracker.cancelButton"="Cancel";
 "newTracker.createButton"="Create";
+"editTracker.title"="Edit tracker";
+"editTracker.saveButton"="Save";
 "category.title"="Category";
 "category.emptyPlaceholderView"="Habits and events can be combined by meaning";
 "category.editButton"="Edit";

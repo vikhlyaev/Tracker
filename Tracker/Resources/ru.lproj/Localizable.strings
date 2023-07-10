@@ -33,6 +33,8 @@
 "newTracker.colorTitle"="Цвет";
 "newTracker.cancelButton"="Отменить";
 "newTracker.createButton"="Создать";
+"editTracker.title"="Редактирование привычки";
+"editTracker.saveButton"="Сохранить";
 "category.title"="Категория";
 "category.emptyPlaceholderView"="Привычки и события можно объединить по смыслу";
 "category.editButton"="Редактировать";
