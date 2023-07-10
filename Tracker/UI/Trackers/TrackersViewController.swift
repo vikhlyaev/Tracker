@@ -100,6 +100,16 @@ final class TrackersViewController: UIViewController {
         isEmptyCategories()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.report(event: .open, screen: .trackers)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.report(event: .close, screen: .trackers)
+    }
+    
     // MARK: - Setup UI
     
     private func setupView() {
@@ -142,16 +152,18 @@ final class TrackersViewController: UIViewController {
         }
         
         let editAction = UIAction(title: NSLocalizedString("trackers.editButton", comment: "Edit tracker")) { [weak self] _ in
-            
+            AnalyticsService.shared.report(event: .click, screen: .trackers, item: .edit)
         }
         
         let deleteAction = UIAction(
             title: NSLocalizedString("trackers.deleteButton", comment: "Delete tracker"),
-            attributes: .destructive) { [weak self] _ in
-                let alert = AlertFactory.shared.makeAlertConfirmingDeletion { [weak self] in
-                    self?.trackerStore.deleteTracker(at: indexPath)
-                }
-                self?.present(alert, animated: true)
+            attributes: .destructive
+        ) { [weak self] _ in
+            let alert = AlertFactory.shared.makeAlertConfirmingDeletion { [weak self] in
+                self?.trackerStore.deleteTracker(at: indexPath)
+            }
+            self?.present(alert, animated: true)
+            AnalyticsService.shared.report(event: .click, screen: .trackers, item: .delete)
         }
         
         return UIMenu(children: [pinAction, editAction, deleteAction])
@@ -193,6 +205,7 @@ final class TrackersViewController: UIViewController {
     private func addButtonTapped() {
         let creatingTrackerViewController = CreatingTrackerViewController(delegate: self)
         present(creatingTrackerViewController, animated: true)
+        AnalyticsService.shared.report(event: .click, screen: .trackers, item: .addTracker)
     }
     
     @objc
@@ -207,6 +220,7 @@ final class TrackersViewController: UIViewController {
     private func filtersButtonTapped() {
         let filtersViewController = FiltersViewController()
         present(filtersViewController, animated: true)
+        AnalyticsService.shared.report(event: .click, screen: .trackers, item: .filter)
     }
 }
 
@@ -250,6 +264,7 @@ extension TrackersViewController: TrackerCellDelegate {
                 return
             }
             collectionView.reloadItems(at: indexPaths)
+            AnalyticsService.shared.report(event: .click, screen: .trackers, item: .track)
         }
     }
     
@@ -261,6 +276,7 @@ extension TrackersViewController: TrackerCellDelegate {
                 return
             }
             collectionView.reloadItems(at: indexPaths)
+            AnalyticsService.shared.report(event: .click, screen: .trackers, item: .track)
         }
     }
 }
@@ -334,6 +350,7 @@ extension TrackersViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension TrackersViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
     }
