@@ -60,7 +60,7 @@ final class AppTabBarController: UITabBarController {
             case .trackers:
                 return wrapInNavigationController(TrackersViewController())
             case .statistic:
-                return wrapInNavigationController(StatisticViewController())
+                return wrapInNavigationController(StatsViewController())
             }
         }
         
