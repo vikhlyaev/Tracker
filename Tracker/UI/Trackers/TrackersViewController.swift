@@ -53,6 +53,25 @@ final class TrackersViewController: UIViewController {
         return searchController
     }()
     
+    private lazy var filtersButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(
+            NSLocalizedString(
+                "trackers.filtersButton",
+                comment: "Filter button text"
+            ),
+            for: .normal
+        )
+        button.contentEdgeInsets = UIEdgeInsets(top: 14, left: 20, bottom: 14, right: 20)
+        button.layer.cornerRadius = 16
+        button.titleLabel?.font = .systemFont(ofSize: 17)
+        button.tintColor = .white
+        button.backgroundColor = .appBlue
+        button.addTarget(self, action: #selector(filtersButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     // MARK: - Data Source
     
     private lazy var trackerStore: TrackerStoreProtocol = TrackerStore(delegate: self)
@@ -87,6 +106,7 @@ final class TrackersViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(placeholderView)
         view.addSubview(collectionView)
+        view.addSubview(filtersButton)
     }
     
     private func setDelegates() {
@@ -181,6 +201,12 @@ final class TrackersViewController: UIViewController {
         applyFilter()
         isEmptyCategories()
         collectionView.reloadData()
+    }
+    
+    @objc
+    private func filtersButtonTapped() {
+        let filtersViewController = FiltersViewController()
+        present(filtersViewController, animated: true)
     }
 }
 
@@ -363,7 +389,10 @@ extension TrackersViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
