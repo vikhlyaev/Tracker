@@ -66,6 +66,9 @@
 		0AE5F5E32A5BEFD4002A5620 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5E22A5BEFD4002A5620 /* FiltersViewController.swift */; };
 		0AE5F5E72A5BF0E3002A5620 /* FiltersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5E62A5BF0E3002A5620 /* FiltersCell.swift */; };
 		0AE5F5E92A5BF12F002A5620 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5E82A5BF12F002A5620 /* FilterType.swift */; };
+		0AE5F5EB2A5CF9A6002A5620 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5EA2A5CF9A6002A5620 /* Event.swift */; };
+		0AE5F5ED2A5CF9CE002A5620 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5EC2A5CF9CE002A5620 /* Screen.swift */; };
+		0AE5F5EF2A5CF9E7002A5620 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F5EE2A5CF9E7002A5620 /* Item.swift */; };
 		0AEE08C02A3EFA6E00728C0D /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE08BF2A3EFA6E00728C0D /* CategoryCell.swift */; };
 		0AFCE8802A3C92A000C2D472 /* UICollectionView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE87F2A3C92A000C2D472 /* UICollectionView + Extensions.swift */; };
 		0AFCE8822A3C92C300C2D472 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCE8812A3C92C300C2D472 /* Reusable.swift */; };
@@ -150,6 +153,9 @@
 		0AE5F5E22A5BEFD4002A5620 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		0AE5F5E62A5BF0E3002A5620 /* FiltersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersCell.swift; sourceTree = "<group>"; };
 		0AE5F5E82A5BF12F002A5620 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
+		0AE5F5EA2A5CF9A6002A5620 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		0AE5F5EC2A5CF9CE002A5620 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		0AE5F5EE2A5CF9E7002A5620 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		0AEE08BF2A3EFA6E00728C0D /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		0AFCE87F2A3C92A000C2D472 /* UICollectionView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView + Extensions.swift"; sourceTree = "<group>"; };
 		0AFCE8812A3C92C300C2D472 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -418,6 +424,9 @@
 			children = (
 				0ABC40F72A5805F700AD8D6D /* AnalyticsService.swift */,
 				0ABC40F92A58069D00AD8D6D /* AnalyticsServiceError.swift */,
+				0AE5F5EA2A5CF9A6002A5620 /* Event.swift */,
+				0AE5F5EC2A5CF9CE002A5620 /* Screen.swift */,
+				0AE5F5EE2A5CF9E7002A5620 /* Item.swift */,
 			);
 			path = AnalyticsService;
 			sourceTree = "<group>";
@@ -685,6 +694,7 @@
 				0AAD20EE2A46E75000123E4C /* DataStore.swift in Sources */,
 				0A5FF6E82A55816000549901 /* CategoryCellViewModel.swift in Sources */,
 				0AAD20F82A4703DE00123E4C /* CategoryStore.swift in Sources */,
+				0AE5F5ED2A5CF9CE002A5620 /* Screen.swift in Sources */,
 				0ABC40FD2A584E6900AD8D6D /* AlertFactory.swift in Sources */,
 				0AC3652A2A2F7CBB00FE6283 /* Tracker.swift in Sources */,
 				0A7291F62A431BFC0045EEA1 /* SettingsTableViewSection.swift in Sources */,
@@ -694,9 +704,11 @@
 				0AAD20EB2A461F4B00123E4C /* ColorMarshall.swift in Sources */,
 				0A2377E02A0CB18800B8B2AD /* TrackersViewController.swift in Sources */,
 				0A5893AE2A166F4000A80732 /* CategoryViewController.swift in Sources */,
+				0AE5F5EF2A5CF9E7002A5620 /* Item.swift in Sources */,
 				0ABC40FA2A58069D00AD8D6D /* AnalyticsServiceError.swift in Sources */,
 				0AB8A5772A14FD95005E239F /* StatsViewController.swift in Sources */,
 				0AFCE8822A3C92C300C2D472 /* Reusable.swift in Sources */,
+				0AE5F5EB2A5CF9A6002A5620 /* Event.swift in Sources */,
 				0AC3652E2A32482C00FE6283 /* TrackerCell.swift in Sources */,
 				0AE0ABD02A54660C007D5FCB /* FirstOnboarding.swift in Sources */,
 				0AFCE8802A3C92A000C2D472 /* UICollectionView + Extensions.swift in Sources */,
@@ -971,7 +983,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VEWJJ8ZGBW;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vikhlyaev.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -990,7 +1002,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VEWJJ8ZGBW;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vikhlyaev.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

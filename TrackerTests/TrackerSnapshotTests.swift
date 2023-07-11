@@ -27,5 +27,4 @@ final class TrackerSnapshotTests: XCTestCase {
             )
         )
     }
-    
 }

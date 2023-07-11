@@ -28,21 +28,3 @@ final class AnalyticsService {
         }
     }
 }
-
-enum Event: String {
-    case open
-    case close
-    case click
-}
-
-enum Screen: String {
-    case trackers
-}
-
-enum Item: String {
-    case addTracker = "add_tracker"
-    case track
-    case filter
-    case edit
-    case delete
-}

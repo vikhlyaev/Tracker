@@ -20,7 +20,7 @@
 "filters.completedButton"="Completed";
 "filters.uncompletedButton"="Uncompleted";
 "tabBar.trackersTab"="Trackers";
-"tabBar.statsTab"="Stats";
+"tabBar.statsTab"="Statistics";
 "creatingTracker.title"="Creating tracker";
 "creatingTracker.habitButton"="Habit";
 "creatingTracker.irregularEventButton"="Irregular Event";
@@ -49,7 +49,7 @@
 "schedule.title"="Schedule";
 "schedule.doneButton"="Done";
 "scheduleCell.everyDay"="Every day";
-"stats.title"="Stats";
+"stats.title"="Statistics";
 "stats.emptyPlaceholderView"="Nothing to analyze yet";
 "stats.bestPeriod"="Best period";
 "stats.perfectDays"="Perfect days";

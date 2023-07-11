@@ -78,7 +78,7 @@ final class RecordStore: NSObject {
 extension RecordStore: RecordStoreProtocol {
     
     var isEmpty: Bool {
-        fetchNumberOfAllRecords() == 0 ? true : false
+        fetchNumberOfAllRecords() == 0
     }
     
     func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool {

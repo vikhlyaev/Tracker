@@ -35,5 +35,4 @@ final class FiltersCell: UITableViewCell {
     func configure(with title: String) {
         textLabel?.text = title
     }
-    
 }
